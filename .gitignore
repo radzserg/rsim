@@ -23,3 +23,5 @@ erl_crash.dump
 rsim-*.tar
 
 .idea/
+
+config/*.secret.exs
