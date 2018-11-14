@@ -4,6 +4,8 @@ defmodule Rsim.UrlDownloader do
 
   """
 
+  alias Rsim.PathBuilder
+
   @doc """
   Creates image from provided URL
   """
@@ -21,11 +23,11 @@ defmodule Rsim.UrlDownloader do
   defp save_tmp_file(_, {:error, %HTTPoison.Error{reason: reason}} ), do: {:error, reason}
 
   defp build_tmp_path(url) do
-    uri = URI.parse(url)
-    basename = Path.basename(uri.path)
-    unique_dir = System.unique_integer([:positive]) |> Integer.to_string
-    tmp_dir = Path.join(System.tmp_dir(), unique_dir)
-    File.mkdir_p!(tmp_dir)
-    "#{tmp_dir}/#{basename}"
+    tmp_path = PathBuilder.tmp_path_from_url(url)
+    tmp_path
+      |> Path.dirname()
+      |> File.mkdir_p!
+
+    tmp_path
   end
 end
