@@ -6,7 +6,7 @@ defmodule RsimTest.PathBuilderTest do
 
   test "it build tmp path" do
     path = PathBuilder.tmp_path_from_url("http://example.com/some/path/name.jpg")
-    tmp_path = Path.dirname(System.tmp_dir())
+    tmp_path = Path.dirname(System.tmp_dir() <> "/")
     r = ~r/#{tmp_path}\/\S{32}\/name\.jpg/
     assert Regex.match?(r, path)
   end
@@ -16,5 +16,4 @@ defmodule RsimTest.PathBuilderTest do
     r = ~r/user\/\S{32}\/name\.jpg/
     assert Regex.match?(r, path)
   end
-
 end
