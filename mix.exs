@@ -46,9 +46,12 @@ defmodule Rsim.MixProject do
       {:httpoison, "~> 1.4"},
       {:download, "~> 0.0.4"},
 
+      {:ecto_sql, "~> 3.0"},
+      {:postgrex, ">= 0.0.0"},
+
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
-      {:poison, "~> 4.0"},
+      {:poison, "~> 4.0", override: true},
       {:sweet_xml, "~> 0.6"},
     ]
   end
