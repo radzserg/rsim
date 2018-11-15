@@ -14,7 +14,7 @@ defmodule Rsim.UrlDownloader do
   end
 
   defp save_tmp_file(url, {:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
-    tmp_path = build_tmp_path(url)
+    tmp_path = create_tmp_path(url)
     File.write!(tmp_path, body)
     {:ok, tmp_path}
   end
@@ -22,7 +22,7 @@ defmodule Rsim.UrlDownloader do
   defp save_tmp_file(_, {:ok, %HTTPoison.Response{status_code: 404}}), do: {:error, :not_exists}
   defp save_tmp_file(_, {:error, %HTTPoison.Error{reason: reason}} ), do: {:error, reason}
 
-  defp build_tmp_path(url) do
+  defp create_tmp_path(url) do
     tmp_path = PathBuilder.tmp_path_from_url(url)
     tmp_path
       |> Path.dirname()

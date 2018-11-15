@@ -3,11 +3,10 @@ defmodule Rsim.PathBuilder do
   Responsible for building paths
   """
 
-  def key_from_url(url, prefix) do
+  def key_from_url(url, prefix, id) do
     uri = URI.parse(url)
     basename = Path.basename(uri.path)
-    hash = random_string(32)
-    path = "#{prefix}/#{hash}/#{basename}"
+    path = "#{prefix}/#{id}/#{basename}"
     path
   end
 
