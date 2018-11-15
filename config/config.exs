@@ -28,4 +28,15 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 
+config :rsim,
+  ecto_repos: [Rsim.Repo]
+
+config :rsim, Rsim.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "rsim",
+  password: "rsimpassword",
+  database: "rsim",
+  hostname: "rsim_db",
+  pool_size: 10
+
 import_config "#{Mix.env}.exs"
