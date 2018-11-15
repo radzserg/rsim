@@ -1,0 +1,26 @@
+version: "3"
+services:
+  rsim:
+    container_name: rsim
+    build:
+      context: .
+    command: mix test
+    depends_on:
+      - rsim_db
+    links:
+      - rsim_db
+    volumes:
+    - .:/app
+
+  rsim_db:
+    image: postgres:9.6.9
+    container_name: rsim_db
+    ports:
+    - "5455:5432"
+    environment:
+    - POSTGRES_USER=rsim
+    - POSTGRES_PASSWORD=rsimpassword
+    - POSTGRES_HOST=db
+    - POSTGRES_DB=rsim_db
+    volumes:
+    - ./data:/var/lib/postgresql/data

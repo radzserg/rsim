@@ -1,0 +1,10 @@
+/deps
+/_build
+/node_modules
+/priv/static/*
+# config/*.secret.exs
+ecl_Crash.dump
+.idea
+/docker
+.git
+.gitignore
