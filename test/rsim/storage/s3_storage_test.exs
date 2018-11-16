@@ -1,5 +1,5 @@
 defmodule RsimTest.S3StorageTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Rsim.S3Storage
 
   alias Rsim.S3Storage

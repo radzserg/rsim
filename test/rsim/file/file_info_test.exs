@@ -1,5 +1,5 @@
 defmodule RsimTest.FileInfoTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Rsim.FileInfo
 
   alias Rsim.FileInfo

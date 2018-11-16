@@ -1,5 +1,5 @@
 defmodule RsimTest.PathBuilderTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Rsim.PathBuilder
 
   alias Rsim.PathBuilder
