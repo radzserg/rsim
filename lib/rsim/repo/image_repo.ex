@@ -6,5 +6,5 @@ defmodule Rsim.ImageRepo do
   @doc """
   Save file to storage
   """
-  @callback save(Rsim.Image.t()) :: {:ok, Ecto.Schema.t()} | {:error, String.t}
+  @callback save(Rsim.Image.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
 end

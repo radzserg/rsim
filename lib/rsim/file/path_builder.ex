@@ -3,13 +3,21 @@ defmodule Rsim.PathBuilder do
   Responsible for building paths
   """
 
-  def key_from_url(url, prefix, id) do
-    uri = URI.parse(url)
+  @doc """
+  Builds key for a storage from provided path.
+  """
+  @spec key_from_path(String.t(), String.t(), String.t()) :: String.t()
+  def key_from_path(path, prefix, id) do
+    uri = URI.parse(path)
     basename = Path.basename(uri.path)
     path = "#{prefix}/#{id}/#{basename}"
     path
   end
 
+  @doc """
+  Builds path to save file temporary
+  """
+  @spec tmp_path_from_url(String.t()) :: String.t()
   def tmp_path_from_url(url) do
     uri = URI.parse(url)
     basename = Path.basename(uri.path)

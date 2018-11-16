@@ -12,7 +12,13 @@ defmodule RsimTest.PathBuilderTest do
   end
 
   test "it builds key for storage from url" do
-    path = PathBuilder.key_from_url("http://example.com/some/path/name.jpg", "user", "unique_id")
+    path = PathBuilder.key_from_path("http://example.com/some/path/name.jpg", "user", "unique_id")
+    r = ~r/user\/unique_id\/name\.jpg/
+    assert Regex.match?(r, path)
+  end
+
+  test "it builds key for storage from path" do
+    path = PathBuilder.key_from_path("/some/path/name.jpg", "user", "unique_id")
     r = ~r/user\/unique_id\/name\.jpg/
     assert Regex.match?(r, path)
   end
