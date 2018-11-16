@@ -1,5 +1,5 @@
 defmodule RsimTest.UrlDownloaderTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Rsim.UrlDownloader
 
   alias Rsim.FileInfo
