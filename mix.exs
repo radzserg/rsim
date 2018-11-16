@@ -14,6 +14,8 @@ defmodule Rsim.MixProject do
       package: package(),
       source_url: "https://github.com/radzserg/rsim",
 
+      elixirc_paths: elixirc_paths(Mix.env),
+
       name: "RSIM",
       #source_url: "https://github.com/radzserg/rstwitter",
       # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
@@ -24,6 +26,9 @@ defmodule Rsim.MixProject do
       #]
     ]
   end
+
+  defp elixirc_paths(:test), do: ["test/support", "lib"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   defp package do
     [
@@ -52,6 +57,9 @@ defmodule Rsim.MixProject do
 
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
+
+      # test
+      {:mox, "~> 0.4.0", only: :test}
     ]
   end
 end
