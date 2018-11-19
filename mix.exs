@@ -17,6 +17,7 @@ defmodule Rsim.MixProject do
       elixirc_paths: elixirc_paths(Mix.env),
 
       name: "RSIM",
+      aliases: aliases(),
       #source_url: "https://github.com/radzserg/rstwitter",
       # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
       #docs: [
@@ -60,6 +61,12 @@ defmodule Rsim.MixProject do
 
       # test
       {:mox, "~> 0.4.0", only: :test}
+    ]
+  end
+
+  defp aliases do
+    [
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end
