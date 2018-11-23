@@ -16,7 +16,7 @@ defmodule Rsim.HasImage do
 
   It saves image to storage and repo. It returns ID of created image
   """
-  @spec save_image_from_url(String.t(), String.t()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
+  @spec save_image_from_url(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
   def save_image_from_url(url, image_type) do
     case UrlDownloader.to_tmp_file(url) do
       {:ok, tmp_path} ->
@@ -31,15 +31,15 @@ defmodule Rsim.HasImage do
 
   It saves image to storage and repo. It returns ID of created image
   """
-  @spec save_image_from_url(String.t(), String.t()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
+  @spec save_image_from_file(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
   def save_image_from_file(file_path, image_type) do
     mime = FileInfo.get_mime!(file_path)
     size = FileInfo.get_size!(file_path)
     id = UUID.uuid4()
 
-    storage_path = PathBuilder.key_from_path(file_path, image_type, id)
+    storage_path = PathBuilder.key_from_path(file_path, Atom.to_string(image_type), id)
 
-    image = %Image{id: id, type: image_type, path: storage_path, mime: mime, size: size}
+    image = %Image{id: id, type: Atom.to_string(image_type), path: storage_path, mime: mime, size: size}
     case @storage.save_file(file_path, storage_path, []) do
       :ok -> save_image_to_repo(image)
       {:error, error} -> {:error, error}
