@@ -16,7 +16,7 @@ defmodule Rsim.MixProject do
 
       elixirc_paths: elixirc_paths(Mix.env),
 
-      name: "RSIM",
+      name: "rsim",
       aliases: aliases(),
       #source_url: "https://github.com/radzserg/rstwitter",
       # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
@@ -47,11 +47,11 @@ defmodule Rsim.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:elixir_uuid, "~> 1.2" },
-      {:poison, "~> 4.0", override: true},
+      {:elixir_uuid, "~> 1.2"},
+      {:poison, "~> 3.0"},
       {:sweet_xml, "~> 0.6"},
 
-      {:ecto_sql, "~> 3.0"},
+      {:ecto, "~> 2.0"},
       {:postgrex, ">= 0.0.0"},
 
       {:httpoison, "~> 1.4"},
