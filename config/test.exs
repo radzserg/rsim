@@ -2,8 +2,8 @@ use Mix.Config
 
 config :rsim,
   storage: Rsim.StorageMock,
-  repo: Rsim.ImageRepoMock
-
+  image_repo: Rsim.ImageRepoMock,
+  repo: Rsim.Repo
 
 config :rsim, Rsim.Repo,
   pool: Ecto.Adapters.SQL.Sandbox

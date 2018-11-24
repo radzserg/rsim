@@ -4,7 +4,7 @@ defmodule Rsim.HasImage do
   """
 
   @storage Application.get_env(:rsim, :storage)
-  @repo Application.get_env(:rsim, :repo)
+  @repo Application.get_env(:rsim, :image_repo)
 
   alias Rsim.FileInfo
   alias Rsim.PathBuilder

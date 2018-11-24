@@ -2,13 +2,14 @@ defmodule Rsim.ImageEctoRepo do
 
   import Ecto.Changeset
 
-  alias Rsim.Repo
   alias Rsim.Image
   alias Rsim.EctoImage
 
+  @repo Application.get_env(:rsim, :repo)
+
   def save(image = %Image{}) do
     changeset = add_changeset(image)
-    Repo.insert(changeset)
+    @repo.insert(changeset)
   end
 
   def add_changeset(image = %Image{}) do

@@ -39,4 +39,9 @@ config :rsim, Rsim.Repo,
   hostname: "rsim_db",
   pool_size: 10
 
+config :rsim,
+  storage: Rsim.Storage,
+  image_repo: Rsim.ImageRepo,
+  repo: Rsim.Repo
+
 import_config "#{Mix.env}.exs"
