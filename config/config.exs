@@ -29,17 +29,6 @@ use Mix.Config
 #
 
 config :rsim,
-  ecto_repos: [Rsim.Repo]
-
-config :rsim, Rsim.Repo,
-  # adapter: Ecto.Adapters.Postgres,  as soon as migrate to ecto_sql: 3
-  username: "rsim",
-  password: "rsimpassword",
-  database: "rsim",
-  hostname: "rsim_db",
-  pool_size: 10
-
-config :rsim,
   storage: Rsim.Storage,
   image_repo: Rsim.ImageRepo,
   repo: Rsim.Repo

@@ -1,3 +1,4 @@
 ExUnit.start()
 
-Ecto.Adapters.SQL.Sandbox.mode(Rsim.Repo, :manual)
+{:ok, _} = Rsim.Repo.start_link()
+# Ecto.Adapters.SQL.Sandbox.mode(Rsim.Repo, :manual)

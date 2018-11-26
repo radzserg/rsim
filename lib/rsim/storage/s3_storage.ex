@@ -5,8 +5,6 @@ defmodule Rsim.S3Storage do
 
   @behaviour Rsim.Storage
 
-  @config Application.get_env(:rsim, :s3)
-
   alias ExAws.S3
 
   @impl Rsim.Storage
@@ -16,7 +14,8 @@ defmodule Rsim.S3Storage do
 
     source_file = File.read!(source_file)
 
-    case S3.put_object(@config[:bucket], key, source_file, opts) |> ExAws.request do
+    s3_config = Rsim.Config.s3_config();
+    case S3.put_object(s3_config[:bucket], key, source_file, opts) |> ExAws.request do
       {:ok, response} ->
         case response.status_code do
           200 -> :ok

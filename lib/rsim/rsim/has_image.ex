@@ -3,9 +3,6 @@ defmodule Rsim.HasImage do
   Helper to get basic file info
   """
 
-  @storage Application.get_env(:rsim, :storage)
-  @repo Application.get_env(:rsim, :image_repo)
-
   alias Rsim.FileInfo
   alias Rsim.PathBuilder
   alias Rsim.UrlDownloader
@@ -40,14 +37,14 @@ defmodule Rsim.HasImage do
     storage_path = PathBuilder.key_from_path(file_path, Atom.to_string(image_type), id)
 
     image = %Image{id: id, type: Atom.to_string(image_type), path: storage_path, mime: mime, size: size}
-    case @storage.save_file(file_path, storage_path, []) do
+    case Rsim.Config.storage().save_file(file_path, storage_path, []) do
       :ok -> save_image_to_repo(image)
       {:error, error} -> {:error, error}
     end
   end
 
   defp save_image_to_repo(image = %Image{}) do
-    case @repo.save(image) do
+    case Rsim.Config.image_repo().save(image) do
       {:ok, _ecto_image} -> {:ok, image}
       {:error, error} -> {:error, error}
     end

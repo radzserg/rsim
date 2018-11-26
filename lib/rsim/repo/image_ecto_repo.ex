@@ -5,11 +5,9 @@ defmodule Rsim.ImageEctoRepo do
   alias Rsim.Image
   alias Rsim.EctoImage
 
-  @repo Application.get_env(:rsim, :repo)
-
   def save(image = %Image{}) do
     changeset = add_changeset(image)
-    @repo.insert(changeset)
+    Rsim.Config.repo().insert(changeset)
   end
 
   def add_changeset(image = %Image{}) do
