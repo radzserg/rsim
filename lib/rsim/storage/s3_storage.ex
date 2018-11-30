@@ -7,9 +7,13 @@ defmodule Rsim.S3Storage do
 
   alias ExAws.S3
 
+  @doc """
+  Save file to storage
+  """
+  @callback save_file(String.t, String.t, Map) :: :ok | {:error, String.t}
   @impl Rsim.Storage
   def save_file(source_file, key, opts \\ %{}) do
-    opts
+    opts = opts
       |> Map.put_new(:acl, :public_read)
 
     source_file = File.read!(source_file)
@@ -23,5 +27,16 @@ defmodule Rsim.S3Storage do
         end
       {:error, error} -> {:error, error}
     end
+  end
+
+  @doc """
+  Returns URL to the file in storage
+  """
+  @callback file_url(String.t) :: {:ok, String.t()} | {:error, String.t}
+  @impl Rsim.Storage
+  def file_url(key) do
+    s3_config = Rsim.Config.s3_config();
+    bucket = s3_config[:bucket]
+    "https://s3.amazonaws.com/#{bucket}/#{key}"
   end
 end
