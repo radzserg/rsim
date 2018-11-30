@@ -20,4 +20,12 @@ defmodule RsimTest.ImageEctoRepoTest do
     {:error, changeset} = ImageEctoRepo.save(image)
     refute changeset.valid?
   end
+
+  test "it returns saved image" do
+    image = %Rsim.Image{id: UUID.uuid4(), type: "user", path: "user/uniq/image.jpg", mime: "image/png", size: 100}
+    {:ok, _ecto_image} = ImageEctoRepo.save(image)
+
+    found_image = ImageEctoRepo.find(image.id)
+    assert found_image == image
+  end
 end
