@@ -8,12 +8,12 @@ defmodule Rsim do
   Saves image provided via URL, returns Rsim.image
   """
   @spec save_image_from_url(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
-  defdelegate save_image_from_url(url, image_type), to: Rsim.HasImage
+  defdelegate save_image_from_url(url, image_type), to: Rsim.ImageUploader
 
   @doc """
   Saves image from local path, returns Rsim.image
   """
   @spec save_image_from_file(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
-  defdelegate save_image_from_file(file_path, image_type), to: Rsim.HasImage
+  defdelegate save_image_from_file(file_path, image_type), to: Rsim.ImageUploader
 
 end

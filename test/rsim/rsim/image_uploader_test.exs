@@ -1,12 +1,12 @@
 defmodule RsimTest.HasImageTest do
   use ExUnit.Case, async: true
-  doctest Rsim.HasImage
+  doctest Rsim.ImageUploader
 
   import Mox
 
   setup :verify_on_exit!
 
-  alias Rsim.HasImage
+  alias Rsim.ImageUploader
   alias Rsim.Image
 
   @valid_image_url "https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png"
@@ -19,7 +19,7 @@ defmodule RsimTest.HasImageTest do
     Rsim.ImageRepoMock
       |> expect(:save, fn %Image{} -> {:ok, %{}} end)
 
-    {:ok, image} = HasImage.save_image_from_url(@valid_image_url, :users)
+    {:ok, image} = ImageUploader.save_image_from_url(@valid_image_url, :users)
     assert %Image{} = image
     assert "image/png" == image.mime
     assert 95 == image.size
@@ -29,14 +29,14 @@ defmodule RsimTest.HasImageTest do
   end
 
   test "it returns error if file cannot be downloaded" do
-    {:error, :not_exists} = HasImage.save_image_from_url(@invalid_image_url, :users)
+    {:error, :not_exists} = ImageUploader.save_image_from_url(@invalid_image_url, :users)
   end
 
   test "it returns error if file cannot be saved to storage" do
     Rsim.StorageMock
     |> expect(:save_file, fn _, _, _ -> {:error, :not_exists} end)
 
-    {:error, :not_exists} = HasImage.save_image_from_url(@valid_image_url, :users)
+    {:error, :not_exists} = ImageUploader.save_image_from_url(@valid_image_url, :users)
   end
 
   test "it returns error if image cannot be saved to repo" do
@@ -48,6 +48,6 @@ defmodule RsimTest.HasImageTest do
     Rsim.ImageRepoMock
       |> expect(:save, fn %Image{} -> {:error, error} end)
 
-    {:error, _error} = HasImage.save_image_from_url(url, :users)
+    {:error, _error} = ImageUploader.save_image_from_url(url, :users)
   end
 end
