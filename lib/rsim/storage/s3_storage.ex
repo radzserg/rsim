@@ -39,4 +39,22 @@ defmodule Rsim.S3Storage do
     bucket = s3_config[:bucket]
     {:ok, "https://s3.amazonaws.com/#{bucket}/#{key}"}
   end
+
+
+  @doc """
+  Saves object to local file
+  """
+  def save_to_local_file!(key, local_path) do
+    case S3.get_object(@config[:bucket], key) |> ExAws.request do
+      {:ok, response} ->
+        case response.status_code do
+          200 ->
+            File.write!(local_path, response.body)
+          {:error, error} -> {:error, error}
+        end
+      {:error, error} ->
+        # IO.inspect error
+        {:error, error}
+    end
+  end
 end

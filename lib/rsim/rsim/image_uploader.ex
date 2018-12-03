@@ -5,7 +5,7 @@ defmodule Rsim.ImageUploader do
 
   alias Rsim.FileInfo
   alias Rsim.PathBuilder
-  alias Rsim.UrlDownloader
+  alias Rsim.ImageDownloader
   alias Rsim.Image
 
   @doc """
@@ -15,7 +15,7 @@ defmodule Rsim.ImageUploader do
   """
   @spec save_image_from_url(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
   def save_image_from_url(url, image_type) do
-    case UrlDownloader.to_tmp_file(url) do
+    case ImageDownloader.to_tmp_file(url) do
       {:ok, tmp_path} ->
         save_image_from_file(tmp_path, image_type)
       {:error, error} -> {:error, error}

@@ -1,4 +1,4 @@
-defmodule Rsim.UrlDownloader do
+defmodule Rsim.ImageDownloader do
   @moduledoc """
   Image manager.
 
