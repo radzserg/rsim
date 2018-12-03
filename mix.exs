@@ -58,6 +58,7 @@ defmodule Rsim.MixProject do
 
       {:httpoison, "~> 1.4"},
 
+      {:mogrify, "~> 0.6.1"},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
 
