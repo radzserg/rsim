@@ -37,6 +37,6 @@ defmodule Rsim.S3Storage do
   def file_url(key) do
     s3_config = Rsim.Config.s3_config();
     bucket = s3_config[:bucket]
-    "https://s3.amazonaws.com/#{bucket}/#{key}"
+    {:ok, "https://s3.amazonaws.com/#{bucket}/#{key}"}
   end
 end
