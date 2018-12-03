@@ -9,7 +9,12 @@ defmodule Rsim.ImageRepo do
   @callback save(Rsim.Image.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
 
   @doc """
-  Find image in repo by id
+  Find image in repo
   """
   @callback find(String.t()) :: Rsim.Image.t() | nil
+
+  @doc """
+  Find image in repo by id width and height
+  """
+  @callback find(String.t(), integer(), integer()) :: Rsim.Image.t() | nil
 end

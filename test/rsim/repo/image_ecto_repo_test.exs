@@ -28,4 +28,19 @@ defmodule RsimTest.ImageEctoRepoTest do
     found_image = ImageEctoRepo.find(image.id)
     assert found_image == image
   end
+
+  test "it returns resized image" do
+    image_id = UUID.uuid4()
+    parent_id = UUID.uuid4()
+    ecto_image = %Rsim.EctoImage{id: parent_id, type: "user", path: "user/uniq/image.jpg",
+      mime: "image/png", size: 100, width: 300, height: 400}
+    resized_ecto_image = %Rsim.EctoImage{id: image_id, parent_id: parent_id, type: "user", path: "user/uniq/image.jpg",
+      mime: "image/png", size: 100, width: 100, height: 200}
+    Rsim.Config.repo().insert!(ecto_image)
+    Rsim.Config.repo().insert!(resized_ecto_image)
+
+    found_image = ImageEctoRepo.find(parent_id, 100, 200)
+    assert %Rsim.EctoImage{} = found_image
+    assert found_image.id == resized_ecto_image.id
+  end
 end

@@ -5,6 +5,8 @@ defmodule Rsim.ImageEctoRepo do
   alias Rsim.Image
   alias Rsim.EctoImage
 
+  @behaviour Rsim.ImageRepo
+
   @doc """
   Save file to storage
   """
@@ -18,10 +20,21 @@ defmodule Rsim.ImageEctoRepo do
   Find image in repo by id
   """
   @callback find(String.t()) :: Rsim.Image.t() | nil
-  def find(id) do
-    case Rsim.Config.repo().get(EctoImage, id) do
+  def find(image_id) do
+    case Rsim.Config.repo().get(EctoImage, image_id) do
       nil -> nil
       ecto_image -> EctoImage.to_image(ecto_image)
+    end
+  end
+
+  @doc """
+  Find image in repo by id
+  """
+  @callback find(String.t(), integer(), integer()) :: Rsim.Image.t() | nil
+  def find(parent_image_id, width, height) do
+    case Rsim.Config.repo().get_by(EctoImage, parent_id: parent_image_id, width: width, height: height) do
+      nil -> nil
+      image -> image
     end
   end
 
