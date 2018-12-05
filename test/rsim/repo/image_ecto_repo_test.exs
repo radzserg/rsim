@@ -20,6 +20,16 @@ defmodule RsimTest.ImageEctoRepoTest do
     assert ecto_image.size == image.size
   end
 
+  test "it saves new image with parent_id" do
+    parent_image = build_test_image()
+    {:ok, ecto_parent_image} = ImageEctoRepo.save(parent_image)
+    image = build_test_image()
+
+    {:ok, ecto_image} = ImageEctoRepo.save(image, ecto_parent_image.id)
+    assert %Rsim.EctoImage{} = ecto_image
+    assert ecto_parent_image.id == ecto_image.parent_id
+  end
+
   test "it return error if image does not have id" do
     image = build_test_image()
       |> Map.put(:id, nil)

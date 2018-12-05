@@ -10,18 +10,33 @@ defmodule Rsim.ImageEctoRepo do
   import Ecto.Query, only: [from: 2]
 
   @doc """
-  Save file to storage
+  Save file to repo
   """
-  @callback save(Rsim.Image.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
+  @impl Rsim.ImageRepo
+  @spec save(Rsim.Image.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
   def save(image = %Image{}) do
-    changeset = add_changeset(image)
+    params = Map.from_struct(image)
+    changeset = add_changeset(params)
+    Rsim.Config.repo().insert(changeset)
+  end
+
+  @doc """
+  Save file to repo with specified parent image id
+  """
+  @impl Rsim.ImageRepo
+  @spec save(Rsim.Image.t(), String.t) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
+  def save(image = %Image{}, parent_image_id) do
+    params = Map.from_struct(image)
+      |> Map.put(:parent_id, parent_image_id)
+    changeset = add_changeset(params)
     Rsim.Config.repo().insert(changeset)
   end
 
   @doc """
   Find image in repo by id
   """
-  @callback find(String.t()) :: Rsim.Image.t() | nil
+  @impl Rsim.ImageRepo
+  @spec find(String.t()) :: Rsim.Image.t() | nil
   def find(image_id) do
     case Rsim.Config.repo().get(EctoImage, image_id) do
       nil -> nil
@@ -32,7 +47,8 @@ defmodule Rsim.ImageEctoRepo do
   @doc """
   Find image in repo by id
   """
-  @callback find(String.t(), integer(), integer()) :: Rsim.Image.t() | nil
+  @impl Rsim.ImageRepo
+  @spec find(String.t(), integer(), integer()) :: Rsim.Image.t() | nil
   def find(image_id, width, height) do
     query = from im in Rsim.EctoImage,
       where: (im.id == ^image_id or im.parent_id == ^image_id) and im.width == ^width and im.height == ^height
@@ -43,11 +59,9 @@ defmodule Rsim.ImageEctoRepo do
     end
   end
 
-  def add_changeset(image = %Image{}) do
-    params = Map.from_struct(image)
-
+  def add_changeset(params) do
     %EctoImage{}
-    |> cast(params, [:id, :type, :path, :size, :mime, :width, :height])
-    |> validate_required([:id, :type, :path, :size, :mime, :width, :height])
+      |> cast(params, [:id, :type, :path, :size, :mime, :width, :height, :parent_id])
+      |> validate_required([:id, :type, :path, :size, :mime, :width, :height])
   end
 end

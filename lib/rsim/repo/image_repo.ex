@@ -9,6 +9,11 @@ defmodule Rsim.ImageRepo do
   @callback save(Rsim.Image.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
 
   @doc """
+  Save file to storage with specified parent image ID
+  """
+  @callback save(Rsim.Image.t(), String.t) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
+
+  @doc """
   Find image in repo
   """
   @callback find(String.t()) :: Rsim.Image.t() | nil
