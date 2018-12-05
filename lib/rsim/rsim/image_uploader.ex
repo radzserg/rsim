@@ -34,11 +34,14 @@ defmodule Rsim.ImageUploader do
     size = FileInfo.get_size!(file_path)
     id = UUID.uuid4()
 
-    storage_path = PathBuilder.key_from_path(file_path, Atom.to_string(image_type), id)
+    {:ok, width, height} = Rsim.Config.meter().size(file_path)
 
-    image = %Image{id: id, type: Atom.to_string(image_type), path: storage_path, mime: mime, size: size}
+    storage_path = PathBuilder.key_from_path(file_path, Atom.to_string(image_type), id)
     case Rsim.Config.storage().save_file(file_path, storage_path, %{}) do
-      :ok -> save_image_to_repo(image)
+      :ok ->
+        image = %Image{id: id, type: Atom.to_string(image_type), path: storage_path, mime: mime, size: size,
+          width: width, height: height}
+        save_image_to_repo(image)
       {:error, error} -> {:error, error}
     end
   end

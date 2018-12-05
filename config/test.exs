@@ -16,7 +16,7 @@ config :rsim,
   storage: Rsim.StorageMock,
   image_repo: Rsim.ImageRepoMock,
   resizer: Rsim.ImageResizerMock,
-  meter: Rsim.ImageMeterMock,
+  image_meter: Rsim.ImageMeterMock,
   repo: Rsim.Repo
 
 

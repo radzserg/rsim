@@ -18,6 +18,8 @@ defmodule RsimTest.HasImageTest do
       |> expect(:save_file, fn _, _, _ -> :ok end)
     Rsim.ImageRepoMock
       |> expect(:save, fn %Image{} -> {:ok, %{}} end)
+    Rsim.ImageMeterMock
+      |> expect(:size, fn _ -> {:ok, 200, 300} end)
 
     {:ok, image} = ImageUploader.save_image_from_url(@valid_image_url, :users)
     assert %Image{} = image
@@ -26,6 +28,8 @@ defmodule RsimTest.HasImageTest do
     assert "users" == image.type
     assert image.id
     assert image.path
+    assert 200 == image.width
+    assert 300 == image.height
   end
 
   test "it returns error if file cannot be downloaded" do
@@ -34,7 +38,9 @@ defmodule RsimTest.HasImageTest do
 
   test "it returns error if file cannot be saved to storage" do
     Rsim.StorageMock
-    |> expect(:save_file, fn _, _, _ -> {:error, :not_exists} end)
+      |> expect(:save_file, fn _, _, _ -> {:error, :not_exists} end)
+    Rsim.ImageMeterMock
+      |> expect(:size, fn _ -> {:ok, 200, 300} end)
 
     {:error, :not_exists} = ImageUploader.save_image_from_url(@valid_image_url, :users)
   end
@@ -47,6 +53,8 @@ defmodule RsimTest.HasImageTest do
       |> expect(:save_file, fn _, _, _ -> :ok end)
     Rsim.ImageRepoMock
       |> expect(:save, fn %Image{} -> {:error, error} end)
+    Rsim.ImageMeterMock
+      |> expect(:size, fn _ -> {:ok, 200, 300} end)
 
     {:error, _error} = ImageUploader.save_image_from_url(url, :users)
   end
