@@ -22,4 +22,10 @@ defmodule RsimTest.PathBuilderTest do
     r = ~r/user\/unique_id\/name\.jpg/
     assert Regex.match?(r, path)
   end
+
+  test "it builds key for resized image" do
+    path = PathBuilder.key_from_path("/some/path/name.jpg", "user", "unique_id", "parent_id")
+    r = ~r/user\/parent_id\/unique_id\/name\.jpg/
+    assert Regex.match?(r, path)
+  end
 end

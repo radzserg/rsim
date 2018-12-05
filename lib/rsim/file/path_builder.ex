@@ -14,6 +14,14 @@ defmodule Rsim.PathBuilder do
     path
   end
 
+  @spec key_from_path(String.t(), String.t(), String.t(), String.t()) :: String.t()
+  def key_from_path(path, prefix, id, parent_id) do
+    uri = URI.parse(path)
+    basename = Path.basename(uri.path)
+    path = "#{prefix}/#{parent_id}/#{id}/#{basename}"
+    path
+  end
+
   @doc """
   Builds path to save file temporary
   """
