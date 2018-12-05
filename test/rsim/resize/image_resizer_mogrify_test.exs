@@ -4,13 +4,6 @@ defmodule RsimTest.ImageResizerMogrifyTest do
 
   alias Rsim.ImageResizerMogrify
 
-  setup_all do
-    dest_path = System.cwd() <> "/test/files/5x6.jpg"
-    File.rm! dest_path
-
-    :ok
-  end
-
   test "it resizes provided image" do
     file_path = System.cwd() <> "/test/files/10x10.jpg"
     dest_path = System.cwd() <> "/test/files/5x6.jpg"

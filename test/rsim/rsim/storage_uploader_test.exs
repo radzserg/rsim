@@ -13,22 +13,32 @@ defmodule RsimTest.StorageUploaderTest do
   @invalid_image_url "https://upload.wikimedia.org/1x1.png"
 
   test "it saves image to DB and return its ID" do
+    ecto_image = %Rsim.EctoImage{
+      id: "2f8e8e23-ee58-47bb-9610-6881652a1f35",
+      mime: "image/png",
+      path: "user/uniq/image.jpg",
+      size: 100,
+      width: 500,
+      height: 400,
+      type: "users"
+    }
+
     Rsim.StorageMock
       |> expect(:save_file, fn _, _ -> :ok end)
     Rsim.ImageRepoMock
-      |> expect(:save, fn %Image{} -> {:ok, %{}} end)
+      |> expect(:save, fn %Image{} -> {:ok, ecto_image} end)
     Rsim.ImageMeterMock
-      |> expect(:size, fn _ -> {:ok, 200, 300} end)
+      |> expect(:size, fn _ -> {:ok, 500, 100} end)
 
     {:ok, image} = StorageUploader.save_image_from_url(@valid_image_url, :users)
     assert %Image{} = image
     assert "image/png" == image.mime
-    assert 95 == image.size
+    assert 100 == image.size
     assert "users" == image.type
     assert image.id
     assert image.path
-    assert 200 == image.width
-    assert 300 == image.height
+    assert 500 == image.width
+    assert 400 == image.height
   end
 
   test "it returns error if file cannot be downloaded" do
@@ -68,7 +78,16 @@ defmodule RsimTest.StorageUploaderTest do
       height: 400,
       type: "users"
     }
-    resized_image = %Rsim.EctoImage{}
+    resized_image = %Rsim.EctoImage{
+      id: "2f8e8e23-ee58-47bb-9610-6881652a1f35",
+      parent_id: original_image.id,
+      mime: "image/png",
+      path: "user/uniq/image.jpg",
+      size: 100,
+      width: 500,
+      height: 400,
+      type: "users"
+    }
     resized_image_path = System.cwd() <> "/test/files/1x1.png"
     Rsim.StorageMock
       |> expect(:save_file, fn ^resized_image_path, _ -> :ok end)
@@ -80,11 +99,11 @@ defmodule RsimTest.StorageUploaderTest do
     assert {:ok, image} = StorageUploader.save_resized_image(resized_image_path, original_image)
     assert %Image{} = image
     assert "image/png" == image.mime
-    assert 95 == image.size
+    assert 100 == image.size
     assert "users" == image.type
     assert image.id
     assert image.path
-    assert 200 == image.width
-    assert 300 == image.height
+    assert 500 == image.width
+    assert 400 == image.height
   end
 end

@@ -36,12 +36,6 @@ defmodule Rsim.ImageFetcher do
     tmp_dest_path = PathBuilder.tmp_path_from_url(original_image_url)
     Rsim.Config.resizer().resize(tmp_path, tmp_dest_path, width, height)
 
-    # todo add parent_id
-    Rsim.StorageUploader.save_image_from_file(tmp_dest_path, original_image.type)
-
-    # image = %Image{id: id, type: Atom.to_string(image_type), path: storage_path, mime: mime, size: size}
-    # resized_image = %Image{id: UUID.uuid4(), type: type, mime: mime, size: "#{width}_#{height}"}
-    # IO.inspect width
-    # IO.inspect height
+    Rsim.StorageUploader.save_resized_image(tmp_dest_path, original_image)
   end
 end

@@ -67,7 +67,7 @@ defmodule Rsim.StorageUploader do
 
   defp save_image_to_repo(image = %Image{}) do
     case Rsim.Config.image_repo().save(image) do
-      {:ok, _ecto_image} -> {:ok, image}
+      {:ok, ecto_image} -> {:ok, Rsim.EctoImage.to_image(ecto_image)}
       {:error, error} -> {:error, error}
     end
   end

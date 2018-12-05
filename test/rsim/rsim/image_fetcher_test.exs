@@ -3,20 +3,27 @@ defmodule RsimTest.ImageFetcherTest do
   doctest Rsim.ImageFetcher
 
   alias Rsim.ImageFetcher
+  alias Rsim.Image
 
   import Mox
 
   setup :verify_on_exit!
 
-  test "it return valid image src for saved image" do
-    image_id = "2f8e8e23-ee58-47bb-9610-6881652a1f34"
-    image = %Rsim.Image{
-      id: image_id,
+  defp create_test_image() do
+    %Image{
+      id: "2f8e8e23-ee58-47bb-9610-6881652a1f34",
       mime: "image/png",
       path: "user/uniq/image.jpg",
       size: 100,
+      width: 500,
+      height: 400,
       type: "user"
     }
+  end
+
+  test "it return valid image src for saved image" do
+    image = create_test_image()
+    image_id = image.id
     image_path = image.path
     expected_url = "https://s3.amazonaws.com/rsim-test/test/files/1x1.jpg"
 
@@ -29,14 +36,8 @@ defmodule RsimTest.ImageFetcherTest do
   end
 
   test "it should return resized image" do
-    image_id = "2f8e8e23-ee58-47bb-9610-6881652a1f34"
-    image = %Rsim.Image{
-      id: image_id,
-      mime: "image/png",
-      path: "user/uniq/image.jpg",
-      size: 100,
-      type: "user"
-    }
+    image = create_test_image()
+    image_id = image.id
     image_path = image.path
     expected_url = "https://s3.amazonaws.com/rsim-test/test/files/1x1.jpg"
     width = 100
@@ -51,21 +52,34 @@ defmodule RsimTest.ImageFetcherTest do
   end
 
   test "it should create resized image if its missing in storage" do
-    image_id = "2f8e8e23-ee58-47bb-9610-6881652a1f34"
-    image = %Rsim.Image{
-      id: image_id,
-      mime: "image/png",
-      path: "user/uniq/image.jpg",
-      size: 100,
-      type: "user"
-    }
+    original_image = create_test_image()
+    resized_ecto_image = %Rsim.EctoImage{id: "2f8e8e23-ee58-47bb-9610-6881652a1f35", mime: "image/png",
+      path: "user/uniq/image.jpg", size: 100, width: 500, height: 400, type: "user"}
+    image_id = original_image.id
+    image_path = original_image.path
     width = 100
     height = 50
 
     Rsim.ImageRepoMock
      |> expect(:find, fn ^image_id, ^width, ^height -> nil end)
-     |> expect(:find, fn ^image_id -> image end)
+     |> expect(:find, fn ^image_id -> original_image end)
+     |> expect(:save, fn _ -> {:ok, resized_ecto_image} end)
+    Rsim.StorageMock
+      |> expect(:file_url, fn ^image_path -> "https://s3.amazonaws.com/rsim-test/test/files/1x1.jpg" end)
+      |> expect(:save_file, fn _, _ -> :ok end)
+    Rsim.ImageResizerMock
+      |> expect(:resize, fn source, dest, ^width, ^height ->
+          dest
+            |> Path.dirname()
+            |> File.mkdir_p!
+          File.copy!(source, dest)
+          :ok
+        end)
+    Rsim.ImageMeterMock
+      |> expect(:size, fn _ -> {:ok, width, height} end)
 
-    ImageFetcher.get_image(image_id, width, height)
+    {:ok, result_image} = ImageFetcher.get_image(image_id, width, height)
+    assert %Image{} = result_image
+    assert resized_ecto_image.id == result_image.id
   end
 end
