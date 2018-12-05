@@ -10,7 +10,7 @@ defmodule Rsim.S3Storage do
   @doc """
   Save file to storage
   """
-  @callback save_file(String.t, String.t, Map) :: :ok | {:error, String.t}
+  @spec save_file(String.t, String.t, Map) :: :ok | {:error, String.t}
   @impl Rsim.Storage
   def save_file(source_file, key, opts \\ %{}) do
     opts = opts
@@ -32,7 +32,7 @@ defmodule Rsim.S3Storage do
   @doc """
   Returns URL to the file in storage
   """
-  @callback file_url(String.t) :: {:ok, String.t()} | {:error, String.t}
+  @spec file_url(String.t) :: {:ok, String.t()} | {:error, String.t}
   @impl Rsim.Storage
   def file_url(key) do
     s3_config = Rsim.Config.s3_config();

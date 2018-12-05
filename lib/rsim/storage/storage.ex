@@ -13,4 +13,8 @@ defmodule Rsim.Storage do
   """
   @callback save_file(String.t, String.t, Map) :: :ok | {:error, String.t}
 
+  @doc """
+  Save file to storage
+  """
+  @callback save_file(String.t, String.t) :: :ok | {:error, String.t}
 end
