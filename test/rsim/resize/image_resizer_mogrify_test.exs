@@ -4,8 +4,6 @@ defmodule RsimTest.ImageResizerMogrifyTest do
 
   alias Rsim.ImageResizerMogrify
 
-  import Mogrify
-
   setup_all do
     dest_path = System.cwd() <> "/test/files/5x6.jpg"
     File.rm! dest_path
@@ -21,8 +19,8 @@ defmodule RsimTest.ImageResizerMogrifyTest do
     ImageResizerMogrify.resize(file_path, dest_path, width, height)
 
     assert File.exists? dest_path
-    image = open(dest_path) |> verbose
-    assert width == image.width
-    assert height == image.height
+    {:ok, result_width, result_height} = Rsim.ImageSizeMogrify.size(dest_path)
+    assert 5 == result_width
+    assert 6 == result_height
   end
 end
