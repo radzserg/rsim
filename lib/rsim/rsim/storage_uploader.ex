@@ -1,4 +1,4 @@
-defmodule Rsim.ImageUploader do
+defmodule Rsim.StorageUploader do
   @moduledoc """
   Helper to get basic file info
   """

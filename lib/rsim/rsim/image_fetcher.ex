@@ -1,18 +1,22 @@
 defmodule Rsim.ImageFetcher do
 
   alias Rsim.Image
+  alias Rsim.ImageDownloader
+  alias Rsim.PathBuilder
 
+  def get_image(image= %Image{}) do
+    Rsim.Config.storage().file_url(image.path)
+  end
   def get_image(id) do
     case find_image(id) do
       nil -> nil
-      image -> Rsim.Config.storage().file_url(image.path)
+      image -> get_image(image)
     end
   end
-
-  def get_image(origina_image_id, width, height) do
-    case find_image(origina_image_id, width, height) do
+  def get_image(image_id, width, height) do
+    case find_image(image_id, width, height) do
       nil ->
-        find_image(origina_image_id)
+        find_image(image_id)
           |> create_resized_image(width, height)
       image -> image_url(image)
     end
@@ -27,9 +31,16 @@ defmodule Rsim.ImageFetcher do
 
   defp create_resized_image(original_image, _width, _height) when is_nil(original_image), do: nil
   defp create_resized_image(original_image = %Image{}, width, height) do
-    # todo download, resize, upload
+    original_image_url = get_image(original_image)
+    {:ok, tmp_path} = ImageDownloader.to_tmp_file(original_image_url)
+    tmp_dest_path = PathBuilder.tmp_path_from_url(original_image_url)
+    Rsim.Config.resizer().resize(tmp_path, tmp_dest_path, width, height)
+
+    # todo add parent_id
+    Rsim.StorageUploader.save_image_from_file(tmp_dest_path, original_image.type)
+
     # image = %Image{id: id, type: Atom.to_string(image_type), path: storage_path, mime: mime, size: size}
-    #resized_image = %Image{id: UUID.uuid4(), type: type, mime: mime}
+    # resized_image = %Image{id: UUID.uuid4(), type: type, mime: mime, size: "#{width}_#{height}"}
     # IO.inspect width
     # IO.inspect height
   end

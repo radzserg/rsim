@@ -1,12 +1,12 @@
-defmodule RsimTest.HasImageTest do
+defmodule RsimTest.StorageUploaderTest do
   use ExUnit.Case, async: true
-  doctest Rsim.ImageUploader
+  doctest Rsim.StorageUploader
 
   import Mox
 
   setup :verify_on_exit!
 
-  alias Rsim.ImageUploader
+  alias Rsim.StorageUploader
   alias Rsim.Image
 
   @valid_image_url "https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png"
