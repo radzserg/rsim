@@ -9,6 +9,7 @@ defmodule Rsim.ImageDownloader do
   @doc """
   Creates image from provided URL
   """
+  @spec to_tmp_file(String.t) :: {:ok, String.t} | {:error, String.t}
   def to_tmp_file(url) do
     save_tmp_file(url, HTTPoison.get(url))
   end
