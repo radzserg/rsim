@@ -1,4 +1,4 @@
-defmodule Rsim.ImageSize do
+defmodule Rsim.ImageMeter do
   @moduledoc """
   Defines image size
   """

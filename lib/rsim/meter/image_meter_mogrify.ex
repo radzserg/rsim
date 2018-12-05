@@ -1,9 +1,9 @@
 defmodule Rsim.ImageMeterMogrify do
   import Mogrify
 
-  @behaviour Rsim.ImageSize
+  @behaviour Rsim.ImageMeter
 
-  @impl Rsim.ImageSize
+  @impl Rsim.ImageMeter
   def size(src) do
     image = open(src) |> verbose
     {:ok, image.width, image.height}
