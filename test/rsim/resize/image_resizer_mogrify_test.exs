@@ -19,7 +19,7 @@ defmodule RsimTest.ImageResizerMogrifyTest do
     ImageResizerMogrify.resize(file_path, dest_path, width, height)
 
     assert File.exists? dest_path
-    {:ok, result_width, result_height} = Rsim.ImageSizeMogrify.size(dest_path)
+    {:ok, result_width, result_height} = Rsim.ImageMeterMogrify.size(dest_path)
     assert 5 == result_width
     assert 6 == result_height
   end

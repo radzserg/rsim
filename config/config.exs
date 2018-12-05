@@ -31,6 +31,8 @@ use Mix.Config
 config :rsim,
   storage: Rsim.Storage,
   image_repo: Rsim.ImageRepo,
+  resizer: Rsim.ImageResizerMogrify,
+  meter: Rsim.ImageMeterMogrify,
   repo: Rsim.Repo
 
 import_config "#{Mix.env}.exs"

@@ -18,4 +18,12 @@ defmodule Rsim.Config do
   def s3_config() do
     Application.get_env(:rsim, :s3)
   end
+
+  def resizer() do
+    Application.get_env(:rsim, :resizer)
+  end
+
+  def meter() do
+    Application.get_env(:rsim, :image_meter)
+  end
 end

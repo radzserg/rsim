@@ -1,4 +1,4 @@
-defmodule Rsim.ImageSizeMogrify do
+defmodule Rsim.ImageMeterMogrify do
   import Mogrify
 
   @behaviour Rsim.ImageSize
