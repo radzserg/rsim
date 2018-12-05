@@ -20,7 +20,8 @@ defmodule Rsim.EctoImage do
   """
   def to_image(ecto_image = %Rsim.EctoImage{}) do
     %Rsim.Image{id: ecto_image.id, type: ecto_image.type, path: ecto_image.path,
-      mime: ecto_image.mime, size: ecto_image.size
+      mime: ecto_image.mime, size: ecto_image.size, width: ecto_image.width,
+      height: ecto_image.height
     }
   end
 

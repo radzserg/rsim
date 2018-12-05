@@ -4,8 +4,13 @@ defmodule RsimTest.ImageEctoRepoTest do
 
   alias Rsim.ImageEctoRepo
 
+  defp build_test_image() do
+    %Rsim.Image{id: UUID.uuid4(), type: "user", path: "user/uniq/image.jpg", mime: "image/png",
+      size: 100, width: 100, height: 200}
+  end
+
   test "it should add new image to repo" do
-    image = %Rsim.Image{id: UUID.uuid4(), type: "user", path: "user/uniq/image.jpg", mime: "image/png", size: 100}
+    image = build_test_image()
     {:ok, ecto_image} = ImageEctoRepo.save(image)
     assert %Rsim.EctoImage{} = ecto_image
     assert ecto_image.id == image.id
@@ -16,13 +21,15 @@ defmodule RsimTest.ImageEctoRepoTest do
   end
 
   test "it return error if image does not have id" do
-    image = %Rsim.Image{id: nil, type: "user", path: "user/uniq/image.jpg", mime: "image/png", size: 100}
+    image = build_test_image()
+      |> Map.put(:id, nil)
+
     {:error, changeset} = ImageEctoRepo.save(image)
     refute changeset.valid?
   end
 
   test "it returns saved image" do
-    image = %Rsim.Image{id: UUID.uuid4(), type: "user", path: "user/uniq/image.jpg", mime: "image/png", size: 100}
+    image = build_test_image()
     {:ok, _ecto_image} = ImageEctoRepo.save(image)
 
     found_image = ImageEctoRepo.find(image.id)

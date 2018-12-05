@@ -7,6 +7,8 @@ defmodule Rsim.ImageEctoRepo do
 
   @behaviour Rsim.ImageRepo
 
+  import Ecto.Query, only: [from: 2]
+
   @doc """
   Save file to storage
   """
@@ -31,8 +33,11 @@ defmodule Rsim.ImageEctoRepo do
   Find image in repo by id
   """
   @callback find(String.t(), integer(), integer()) :: Rsim.Image.t() | nil
-  def find(parent_image_id, width, height) do
-    case Rsim.Config.repo().get_by(EctoImage, parent_id: parent_image_id, width: width, height: height) do
+  def find(image_id, width, height) do
+    query = from im in Rsim.EctoImage,
+      where: (im.id == ^image_id or im.parent_id == ^image_id) and im.width == ^width and im.height == ^height
+
+    case Rsim.Config.repo().one(query) do
       nil -> nil
       image -> image
     end
@@ -42,7 +47,7 @@ defmodule Rsim.ImageEctoRepo do
     params = Map.from_struct(image)
 
     %EctoImage{}
-    |> cast(params, [:id, :type, :path, :size, :mime])
-    |> validate_required([:id, :type, :path, :size, :mime])
+    |> cast(params, [:id, :type, :path, :size, :mime, :width, :height])
+    |> validate_required([:id, :type, :path, :size, :mime, :width, :height])
   end
 end

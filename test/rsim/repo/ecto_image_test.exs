@@ -11,5 +11,7 @@ defmodule RsimTest.EctoImageTest do
     assert image.path == ecto_image.path
     assert image.mime == ecto_image.mime
     assert image.size == ecto_image.size
+    assert image.width == ecto_image.width
+    assert image.height == ecto_image.height
   end
 end
