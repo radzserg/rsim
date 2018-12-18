@@ -8,19 +8,18 @@ defmodule Rsim.MixProject do
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      description: "Image manager",
+      description: "Image manager, allows to upload images to AWS S3, resize image and save to DB",
       package: package(),
       source_url: "https://github.com/radzserg/rsim",
       elixirc_paths: elixirc_paths(Mix.env()),
       name: "rsim",
-      aliases: aliases()
-      # source_url: "https://github.com/radzserg/rstwitter",
+      aliases: aliases(),
+      source_url: "https://github.com/radzserg/rsim",
       # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
-      # docs: [
-      #  main: "RsTwitter", # The main page in the docs
-      #  #logo: "path/to/logo.png",
-      #  extras: ["README.md"]
-      # ]
+      docs: [
+        main: "Rsim",
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -56,7 +55,9 @@ defmodule Rsim.MixProject do
       {:ex_aws_s3, "~> 2.0"},
 
       # test
-      {:mox, "~> 0.4.0", only: :test}
+      {:mox, "~> 0.4.0", only: :test},
+
+      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
     ]
   end
 

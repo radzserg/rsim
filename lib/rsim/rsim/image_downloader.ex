@@ -1,13 +1,13 @@
 defmodule Rsim.ImageDownloader do
   @moduledoc """
-  Image manager.
-
+  Image Downloader, downloads image to tmp path
   """
 
   alias Rsim.PathBuilder
 
   @doc """
   Creates image from provided URL
+  {:ok, tmp_path} = Rsim.ImageDownloader.to_tmp_file("http://example.com/image.png")
   """
   @spec to_tmp_file(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def to_tmp_file(url) do

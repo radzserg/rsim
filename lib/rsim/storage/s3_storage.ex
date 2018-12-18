@@ -19,7 +19,7 @@ defmodule Rsim.S3Storage do
 
     source_file = File.read!(source_file)
 
-    s3_config = Rsim.Config.s3_config()
+    s3_config = s3_config()
 
     case S3.put_object(s3_config[:bucket], key, source_file, opts) |> ExAws.request() do
       {:ok, response} ->
@@ -39,8 +39,12 @@ defmodule Rsim.S3Storage do
   @spec file_url(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   @impl Rsim.Storage
   def file_url(key) do
-    s3_config = Rsim.Config.s3_config()
+    s3_config = s3_config()
     bucket = s3_config[:bucket]
     {:ok, "https://s3.amazonaws.com/#{bucket}/#{key}"}
+  end
+
+  defp s3_config() do
+    Application.get_env(:rsim, :s3)
   end
 end

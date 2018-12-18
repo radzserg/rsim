@@ -9,7 +9,9 @@ defmodule Rsim.ImageEctoRepo do
   import Ecto.Query, only: [from: 2]
 
   @doc """
-  Save file to repo
+  Save Rsim.Image to repo, returns Rsim.EctoImage
+
+  {:ok, rsim_ecto_image} = Rsim.ImageEctoRepo.save(rsim_image)
   """
   @impl Rsim.ImageRepo
   @spec save(Rsim.Image.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
@@ -20,7 +22,9 @@ defmodule Rsim.ImageEctoRepo do
   end
 
   @doc """
-  Save file to repo with specified parent image id
+  Save Rsim.Image to repo with provided parent_id, returns Rsim.EctoImage
+
+  {:ok, rsim_ecto_image} = Rsim.ImageEctoRepo.save(rsim_image)
   """
   @impl Rsim.ImageRepo
   @spec save(Rsim.Image.t(), String.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
@@ -34,7 +38,9 @@ defmodule Rsim.ImageEctoRepo do
   end
 
   @doc """
-  Find image in repo by id
+  Find image in repo by id, return Rsim.Image
+
+  rsim_image = Rsim.ImageEctoRepo.find(image_id)
   """
   @impl Rsim.ImageRepo
   @spec find(String.t()) :: Rsim.Image.t() | nil
@@ -47,6 +53,8 @@ defmodule Rsim.ImageEctoRepo do
 
   @doc """
   Find image in repo by id
+
+  rsim_image = Rsim.ImageEctoRepo.find(image_id, 200, 150)
   """
   @impl Rsim.ImageRepo
   @spec find(String.t(), integer(), integer()) :: Rsim.Image.t() | nil
@@ -64,7 +72,7 @@ defmodule Rsim.ImageEctoRepo do
     end
   end
 
-  def add_changeset(params) do
+  defp add_changeset(params) do
     %EctoImage{}
     |> cast(params, [:id, :type, :path, :size, :mime, :width, :height, :parent_id])
     |> validate_required([:id, :type, :path, :size, :mime, :width, :height])

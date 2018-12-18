@@ -33,7 +33,7 @@ defmodule RsimTest.ImageFetcherTest do
     Rsim.ImageRepoMock
     |> expect(:find, fn ^image_id -> image end)
 
-    assert {:ok, expected_url} == ImageFetcher.get_image(image_id)
+    assert {:ok, expected_url} == ImageFetcher.get_image_url(image_id)
   end
 
   test "it should return resized image" do
@@ -50,7 +50,7 @@ defmodule RsimTest.ImageFetcherTest do
     Rsim.ImageRepoMock
     |> expect(:find, fn ^image_id, ^width, ^height -> image end)
 
-    assert expected_url == ImageFetcher.get_image(image_id, width, height)
+    assert expected_url == ImageFetcher.get_image_url(image_id, width, height)
   end
 
   test "it should create resized image if its missing in storage" do
@@ -95,6 +95,6 @@ defmodule RsimTest.ImageFetcherTest do
     Rsim.ImageMeterMock
     |> expect(:size, fn _ -> {:ok, width, height} end)
 
-    assert {:ok, expected_url} == ImageFetcher.get_image(image_id, width, height)
+    assert {:ok, expected_url} == ImageFetcher.get_image_url(image_id, width, height)
   end
 end
