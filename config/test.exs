@@ -19,7 +19,6 @@ config :rsim,
   image_meter: Rsim.ImageMeterMock,
   repo: Rsim.Repo
 
-
 config :logger, level: :warn
 
 import_config "test.secret.exs"

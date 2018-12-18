@@ -8,12 +8,13 @@ defmodule Rsim.FileInfo do
   """
   @spec get_mime!(String.t()) :: String.t()
   def get_mime!(path) do
-    {result, 0} = System.cmd("file", ["--mime-type"|[path]])
+    {result, 0} = System.cmd("file", ["--mime-type" | [path]])
+
     result
     |> String.split(":")
-    |> List.last
-    |> String.trim
-    |> String.downcase
+    |> List.last()
+    |> String.trim()
+    |> String.downcase()
   end
 
   @doc """
@@ -21,7 +22,7 @@ defmodule Rsim.FileInfo do
   """
   @spec get_size!(String.t()) :: number
   def get_size!(path) do
-    stat = File.stat! path
+    stat = File.stat!(path)
     stat.size
   end
 end

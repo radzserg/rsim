@@ -18,10 +18,11 @@ defmodule Rsim.StorageUploader do
     case ImageDownloader.to_tmp_file(url) do
       {:ok, tmp_path} ->
         save_image_from_file(tmp_path, image_type)
-      {:error, error} -> {:error, error}
+
+      {:error, error} ->
+        {:error, error}
     end
   end
-
 
   @doc """
   Saves image from provided file path.
@@ -37,12 +38,23 @@ defmodule Rsim.StorageUploader do
     {:ok, width, height} = Rsim.Config.meter().size(file_path)
 
     storage_path = PathBuilder.key_from_path(file_path, Atom.to_string(image_type), id)
+
     case Rsim.Config.storage().save_file(file_path, storage_path) do
       :ok ->
-        image = %Image{id: id, type: Atom.to_string(image_type), path: storage_path, mime: mime, size: size,
-          width: width, height: height}
+        image = %Image{
+          id: id,
+          type: Atom.to_string(image_type),
+          path: storage_path,
+          mime: mime,
+          size: size,
+          width: width,
+          height: height
+        }
+
         save_image_to_repo(image)
-      {:error, error} -> {:error, error}
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 
@@ -56,12 +68,23 @@ defmodule Rsim.StorageUploader do
     {:ok, width, height} = Rsim.Config.meter().size(file_path)
 
     storage_path = PathBuilder.key_from_path(file_path, parent_image.type, id, parent_image.id)
+
     case Rsim.Config.storage().save_file(file_path, storage_path) do
       :ok ->
-        image = %Image{id: id, type: parent_image.type, path: storage_path, mime: parent_image.mime, size: size,
-          width: width, height: height}
+        image = %Image{
+          id: id,
+          type: parent_image.type,
+          path: storage_path,
+          mime: parent_image.mime,
+          size: size,
+          width: width,
+          height: height
+        }
+
         save_image_to_repo(image)
-      {:error, error} -> {:error, error}
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 

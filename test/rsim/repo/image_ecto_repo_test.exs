@@ -5,8 +5,15 @@ defmodule RsimTest.ImageEctoRepoTest do
   alias Rsim.ImageEctoRepo
 
   defp build_test_image() do
-    %Rsim.Image{id: UUID.uuid4(), type: "user", path: "user/uniq/image.jpg", mime: "image/png",
-      size: 100, width: 100, height: 200}
+    %Rsim.Image{
+      id: UUID.uuid4(),
+      type: "user",
+      path: "user/uniq/image.jpg",
+      mime: "image/png",
+      size: 100,
+      width: 100,
+      height: 200
+    }
   end
 
   test "it should add new image to repo" do
@@ -31,7 +38,8 @@ defmodule RsimTest.ImageEctoRepoTest do
   end
 
   test "it return error if image does not have id" do
-    image = build_test_image()
+    image =
+      build_test_image()
       |> Map.put(:id, nil)
 
     {:error, changeset} = ImageEctoRepo.save(image)
@@ -49,10 +57,28 @@ defmodule RsimTest.ImageEctoRepoTest do
   test "it returns resized image" do
     image_id = UUID.uuid4()
     parent_id = UUID.uuid4()
-    ecto_image = %Rsim.EctoImage{id: parent_id, type: "user", path: "user/uniq/image.jpg",
-      mime: "image/png", size: 100, width: 300, height: 400}
-    resized_ecto_image = %Rsim.EctoImage{id: image_id, parent_id: parent_id, type: "user", path: "user/uniq/image.jpg",
-      mime: "image/png", size: 100, width: 100, height: 200}
+
+    ecto_image = %Rsim.EctoImage{
+      id: parent_id,
+      type: "user",
+      path: "user/uniq/image.jpg",
+      mime: "image/png",
+      size: 100,
+      width: 300,
+      height: 400
+    }
+
+    resized_ecto_image = %Rsim.EctoImage{
+      id: image_id,
+      parent_id: parent_id,
+      type: "user",
+      path: "user/uniq/image.jpg",
+      mime: "image/png",
+      size: 100,
+      width: 100,
+      height: 200
+    }
+
     Rsim.Config.repo().insert!(ecto_image)
     Rsim.Config.repo().insert!(resized_ecto_image)
 

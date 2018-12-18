@@ -1,5 +1,4 @@
 defmodule Rsim.ImageEctoRepo do
-
   import Ecto.Changeset
 
   alias Rsim.Image
@@ -24,10 +23,12 @@ defmodule Rsim.ImageEctoRepo do
   Save file to repo with specified parent image id
   """
   @impl Rsim.ImageRepo
-  @spec save(Rsim.Image.t(), String.t) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
+  @spec save(Rsim.Image.t(), String.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
   def save(image = %Image{}, parent_image_id) do
-    params = Map.from_struct(image)
+    params =
+      Map.from_struct(image)
       |> Map.put(:parent_id, parent_image_id)
+
     changeset = add_changeset(params)
     Rsim.Config.repo().insert(changeset)
   end
@@ -50,8 +51,12 @@ defmodule Rsim.ImageEctoRepo do
   @impl Rsim.ImageRepo
   @spec find(String.t(), integer(), integer()) :: Rsim.Image.t() | nil
   def find(image_id, width, height) do
-    query = from im in Rsim.EctoImage,
-      where: (im.id == ^image_id or im.parent_id == ^image_id) and im.width == ^width and im.height == ^height
+    query =
+      from(im in Rsim.EctoImage,
+        where:
+          (im.id == ^image_id or im.parent_id == ^image_id) and im.width == ^width and
+            im.height == ^height
+      )
 
     case Rsim.Config.repo().one(query) do
       nil -> nil
@@ -61,7 +66,7 @@ defmodule Rsim.ImageEctoRepo do
 
   def add_changeset(params) do
     %EctoImage{}
-      |> cast(params, [:id, :type, :path, :size, :mime, :width, :height, :parent_id])
-      |> validate_required([:id, :type, :path, :size, :mime, :width, :height])
+    |> cast(params, [:id, :type, :path, :size, :mime, :width, :height, :parent_id])
+    |> validate_required([:id, :type, :path, :size, :mime, :width, :height])
   end
 end

@@ -8,28 +8,24 @@ defmodule Rsim.MixProject do
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-
-
       description: "Image manager",
       package: package(),
       source_url: "https://github.com/radzserg/rsim",
-
-      elixirc_paths: elixirc_paths(Mix.env),
-
+      elixirc_paths: elixirc_paths(Mix.env()),
       name: "rsim",
-      aliases: aliases(),
-      #source_url: "https://github.com/radzserg/rstwitter",
+      aliases: aliases()
+      # source_url: "https://github.com/radzserg/rstwitter",
       # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
-      #docs: [
+      # docs: [
       #  main: "RsTwitter", # The main page in the docs
       #  #logo: "path/to/logo.png",
       #  extras: ["README.md"]
-      #]
+      # ]
     ]
   end
 
   defp elixirc_paths(:test), do: ["test/support", "lib"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   defp package do
     [
@@ -52,12 +48,9 @@ defmodule Rsim.MixProject do
       {:elixir_uuid, "~> 1.2"},
       {:poison, "~> 3.0"},
       {:sweet_xml, "~> 0.6"},
-
       {:ecto, "~> 2.0"},
       {:postgrex, ">= 0.0.0"},
-
       {:httpoison, "~> 1.4"},
-
       {:mogrify, "~> 0.6.1"},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},

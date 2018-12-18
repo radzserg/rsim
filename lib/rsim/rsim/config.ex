@@ -8,11 +8,11 @@ defmodule Rsim.Config do
   end
 
   def storage() do
-    Application.get_env(:rsim, :storage)
+    Application.get_env(:rsim, :storage, Rsim.S3Storage)
   end
 
   def image_repo() do
-    Application.get_env(:rsim, :image_repo)
+    Application.get_env(:rsim, :image_repo, Rsim.ImageEctoRepo)
   end
 
   def s3_config() do
@@ -20,10 +20,10 @@ defmodule Rsim.Config do
   end
 
   def resizer() do
-    Application.get_env(:rsim, :resizer)
+    Application.get_env(:rsim, :resizer, Rsim.ImageResizerMogrify)
   end
 
   def meter() do
-    Application.get_env(:rsim, :image_meter)
+    Application.get_env(:rsim, :image_meter, Rsim.ImageMeterMogrify)
   end
 end

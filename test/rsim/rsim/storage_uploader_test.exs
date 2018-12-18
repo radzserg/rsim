@@ -24,11 +24,13 @@ defmodule RsimTest.StorageUploaderTest do
     }
 
     Rsim.StorageMock
-      |> expect(:save_file, fn _, _ -> :ok end)
+    |> expect(:save_file, fn _, _ -> :ok end)
+
     Rsim.ImageRepoMock
-      |> expect(:save, fn %Image{} -> {:ok, ecto_image} end)
+    |> expect(:save, fn %Image{} -> {:ok, ecto_image} end)
+
     Rsim.ImageMeterMock
-      |> expect(:size, fn _ -> {:ok, 500, 100} end)
+    |> expect(:size, fn _ -> {:ok, 500, 100} end)
 
     {:ok, image} = StorageUploader.save_image_from_url(@valid_image_url, :users)
     assert %Image{} = image
@@ -47,9 +49,10 @@ defmodule RsimTest.StorageUploaderTest do
 
   test "it returns error if file cannot be saved to storage" do
     Rsim.StorageMock
-      |> expect(:save_file, fn _, _ -> {:error, :not_exists} end)
+    |> expect(:save_file, fn _, _ -> {:error, :not_exists} end)
+
     Rsim.ImageMeterMock
-      |> expect(:size, fn _ -> {:ok, 200, 300} end)
+    |> expect(:size, fn _ -> {:ok, 200, 300} end)
 
     {:error, :not_exists} = StorageUploader.save_image_from_url(@valid_image_url, :users)
   end
@@ -59,11 +62,13 @@ defmodule RsimTest.StorageUploaderTest do
     error = %Ecto.Changeset{}
 
     Rsim.StorageMock
-      |> expect(:save_file, fn _, _ -> :ok end)
+    |> expect(:save_file, fn _, _ -> :ok end)
+
     Rsim.ImageRepoMock
-      |> expect(:save, fn %Image{} -> {:error, error} end)
+    |> expect(:save, fn %Image{} -> {:error, error} end)
+
     Rsim.ImageMeterMock
-      |> expect(:size, fn _ -> {:ok, 200, 300} end)
+    |> expect(:size, fn _ -> {:ok, 200, 300} end)
 
     {:error, _error} = StorageUploader.save_image_from_url(url, :users)
   end
@@ -78,6 +83,7 @@ defmodule RsimTest.StorageUploaderTest do
       height: 400,
       type: "users"
     }
+
     resized_image = %Rsim.EctoImage{
       id: "2f8e8e23-ee58-47bb-9610-6881652a1f35",
       parent_id: original_image.id,
@@ -88,13 +94,17 @@ defmodule RsimTest.StorageUploaderTest do
       height: 400,
       type: "users"
     }
+
     resized_image_path = System.cwd() <> "/test/files/1x1.png"
+
     Rsim.StorageMock
-      |> expect(:save_file, fn ^resized_image_path, _ -> :ok end)
+    |> expect(:save_file, fn ^resized_image_path, _ -> :ok end)
+
     Rsim.ImageMeterMock
-      |> expect(:size, fn _ -> {:ok, 200, 300} end)
+    |> expect(:size, fn _ -> {:ok, 200, 300} end)
+
     Rsim.ImageRepoMock
-      |> expect(:save, fn %Image{} -> {:ok, resized_image} end)
+    |> expect(:save, fn %Image{} -> {:ok, resized_image} end)
 
     assert {:ok, image} = StorageUploader.save_resized_image(resized_image_path, original_image)
     assert %Image{} = image

@@ -9,7 +9,7 @@ defmodule RsimTest.ImageDownloaderTest do
     url = "https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png"
     {:ok, tmp_path} = ImageDownloader.to_tmp_file(url)
 
-    assert File.exists? tmp_path
+    assert File.exists?(tmp_path)
     assert "image/png" == FileInfo.get_mime!(tmp_path)
     assert 95 == FileInfo.get_size!(tmp_path)
   end

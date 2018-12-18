@@ -3,7 +3,14 @@ defmodule RsimTest.EctoImageTest do
   doctest Rsim.EctoImage
 
   test "it converts ecto_image to image" do
-    ecto_image = %Rsim.EctoImage{id: UUID.uuid4(), type: "user", path: "user/uniq/image.jpg", mime: "image/png", size: 100}
+    ecto_image = %Rsim.EctoImage{
+      id: UUID.uuid4(),
+      type: "user",
+      path: "user/uniq/image.jpg",
+      mime: "image/png",
+      size: 100
+    }
+
     image = Rsim.EctoImage.to_image(ecto_image)
     assert %Rsim.Image{} = image
     assert image.id == ecto_image.id

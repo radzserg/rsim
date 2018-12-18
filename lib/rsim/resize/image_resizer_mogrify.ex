@@ -6,9 +6,10 @@ defmodule Rsim.ImageResizerMogrify do
   @impl Rsim.ImageResizer
   def resize(src, dest, width, height) do
     open(src)
-      |> resize_to_fill("#{width}x#{height}")
-      |> gravity("center")
-      |> save(path: dest)
+    |> resize_to_fill("#{width}x#{height}")
+    |> gravity("center")
+    |> save(path: dest)
+
     :ok
   end
 end

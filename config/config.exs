@@ -35,4 +35,4 @@ config :rsim,
   image_meter: Rsim.ImageMeterMogrify,
   repo: Rsim.Repo
 
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

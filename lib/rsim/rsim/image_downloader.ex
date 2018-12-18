@@ -9,7 +9,7 @@ defmodule Rsim.ImageDownloader do
   @doc """
   Creates image from provided URL
   """
-  @spec to_tmp_file(String.t) :: {:ok, String.t} | {:error, String.t}
+  @spec to_tmp_file(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def to_tmp_file(url) do
     save_tmp_file(url, HTTPoison.get(url))
   end
@@ -21,13 +21,14 @@ defmodule Rsim.ImageDownloader do
   end
 
   defp save_tmp_file(_, {:ok, %HTTPoison.Response{status_code: 404}}), do: {:error, :not_exists}
-  defp save_tmp_file(_, {:error, %HTTPoison.Error{reason: reason}} ), do: {:error, reason}
+  defp save_tmp_file(_, {:error, %HTTPoison.Error{reason: reason}}), do: {:error, reason}
 
   defp create_tmp_path(url) do
     tmp_path = PathBuilder.tmp_path_from_url(url)
+
     tmp_path
-      |> Path.dirname()
-      |> File.mkdir_p!
+    |> Path.dirname()
+    |> File.mkdir_p!()
 
     tmp_path
   end
