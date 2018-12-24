@@ -83,7 +83,7 @@ defmodule RsimTest.ImageEctoRepoTest do
     Rsim.Config.repo().insert!(resized_ecto_image)
 
     found_image = ImageEctoRepo.find(parent_id, 100, 200)
-    assert %Rsim.EctoImage{} = found_image
+    assert %Rsim.Image{} = found_image
     assert found_image.id == resized_ecto_image.id
   end
 end

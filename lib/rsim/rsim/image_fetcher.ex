@@ -43,16 +43,12 @@ defmodule Rsim.ImageFetcher do
         get_image_url(image)
 
       image ->
-        image_url(image)
+        get_image_url(image)
     end
   end
 
   defp find_image(id), do: Rsim.Config.image_repo().find(id)
   defp find_image(id, width, height), do: Rsim.Config.image_repo().find(id, width, height)
-
-  defp image_url(image = %Image{}) do
-    Rsim.Config.storage().file_url(image.path)
-  end
 
   defp create_resized_image(original_image, _width, _height) when is_nil(original_image), do: nil
 

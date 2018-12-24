@@ -68,7 +68,7 @@ defmodule Rsim.ImageEctoRepo do
 
     case Rsim.Config.repo().one(query) do
       nil -> nil
-      image -> image
+      ecto_image -> EctoImage.to_image(ecto_image)
     end
   end
 
