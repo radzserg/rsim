@@ -67,7 +67,7 @@ defmodule Rsim.StorageUploader do
     size = FileInfo.get_size!(file_path)
     {:ok, width, height} = Rsim.Config.meter().size(file_path)
 
-    storage_path = PathBuilder.key_from_path(file_path, parent_image.type, id, parent_image.id)
+    storage_path = PathBuilder.key_from_path_with_parent(file_path, parent_image.type, id, parent_image.id)
 
     case Rsim.Config.storage().save_file(file_path, storage_path) do
       :ok ->

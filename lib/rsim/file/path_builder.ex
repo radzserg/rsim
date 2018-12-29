@@ -19,10 +19,10 @@ defmodule Rsim.PathBuilder do
   @doc """
   Builds key for a storage from provided path.
 
-  "users/parent_id/id/filename.jpg" == Rsim.PathBuilder.key_from_path("/path/to/filename.jpg", "users", id)
+  "users/parent_id/id/filename.jpg" == Rsim.PathBuilder.key_from_path_with_parent("/path/to/filename.jpg", "users", id, parent_id)
   """
-  @spec key_from_path(String.t(), String.t(), String.t(), String.t()) :: String.t()
-  def key_from_path(path, prefix, id, parent_id) do
+  @spec key_from_path_with_parent(String.t(), String.t(), String.t(), String.t()) :: String.t()
+  def key_from_path_with_parent(path, prefix, id, parent_id) do
     uri = URI.parse(path)
     basename = Path.basename(uri.path)
     path = "#{prefix}/#{parent_id}/#{id}/#{basename}"

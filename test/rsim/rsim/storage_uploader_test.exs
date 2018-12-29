@@ -116,4 +116,8 @@ defmodule RsimTest.StorageUploaderTest do
     assert 500 == image.width
     assert 400 == image.height
   end
+
+  test "it saves uploaded image to storage" do
+    # StorageUploader.save_image_from_file(url, :users)
+  end
 end
