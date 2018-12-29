@@ -32,5 +32,5 @@ defmodule Rsim.ImageRepo do
   @doc """
   Deletes all images by provided IDs
   """
-  @callback delete_all(image_ids :: [String.t]) :: :ok | {:error, String.t}
+  @callback delete_all(image_ids :: [String.t()]) :: :ok | {:error, String.t()}
 end

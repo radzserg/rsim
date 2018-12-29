@@ -88,55 +88,62 @@ defmodule RsimTest.ImageEctoRepoTest do
   end
 
   test "it returns all sizes of image" do
-    {:ok, image} = Rsim.Config.repo().insert(%Rsim.EctoImage{
-      id: UUID.uuid4(),
-      type: "user",
-      path: "user/uniq/image.jpg",
-      mime: "image/png",
-      size: 100,
-      width: 100,
-      height: 200
-    })
-    {:ok, resized_image} = Rsim.Config.repo().insert(%Rsim.EctoImage{
-      id: UUID.uuid4(),
-      type: "user",
-      path: "user/uniq/image.jpg",
-      mime: "image/png",
-      size: 80,
-      width: 50,
-      height: 100,
-      parent_id: image.id
-    })
+    {:ok, image} =
+      Rsim.Config.repo().insert(%Rsim.EctoImage{
+        id: UUID.uuid4(),
+        type: "user",
+        path: "user/uniq/image.jpg",
+        mime: "image/png",
+        size: 100,
+        width: 100,
+        height: 200
+      })
+
+    {:ok, resized_image} =
+      Rsim.Config.repo().insert(%Rsim.EctoImage{
+        id: UUID.uuid4(),
+        type: "user",
+        path: "user/uniq/image.jpg",
+        mime: "image/png",
+        size: 80,
+        width: 50,
+        height: 100,
+        parent_id: image.id
+      })
 
     images = ImageEctoRepo.find_all_sizes_of_image(image.id)
-    image_ids = Enum.map(images, &(&1.id))
+    image_ids = Enum.map(images, & &1.id)
     assert [image.id, resized_image.id] == image_ids
   end
 
   test "it deletes images by provided IDs" do
     image_id_1 = "2f8e8e23-ee58-47bb-9610-6881652a1f35"
     image_id_2 = "2f8e8e23-ee58-47bb-9610-6881652a1f36"
-    {:ok, _} = Rsim.Config.repo().insert(%Rsim.EctoImage{
-      id: image_id_1,
-      type: "user",
-      path: "user/uniq/image.jpg",
-      mime: "image/png",
-      size: 100,
-      width: 100,
-      height: 200
-    })
-    {:ok, _} = Rsim.Config.repo().insert(%Rsim.EctoImage{
-      id: image_id_2,
-      type: "user",
-      path: "user/uniq/image.jpg",
-      mime: "image/png",
-      size: 80,
-      width: 50,
-      height: 100
-    })
+
+    {:ok, _} =
+      Rsim.Config.repo().insert(%Rsim.EctoImage{
+        id: image_id_1,
+        type: "user",
+        path: "user/uniq/image.jpg",
+        mime: "image/png",
+        size: 100,
+        width: 100,
+        height: 200
+      })
+
+    {:ok, _} =
+      Rsim.Config.repo().insert(%Rsim.EctoImage{
+        id: image_id_2,
+        type: "user",
+        path: "user/uniq/image.jpg",
+        mime: "image/png",
+        size: 80,
+        width: 50,
+        height: 100
+      })
 
     assert :ok == ImageEctoRepo.delete_all([image_id_1, image_id_2])
-    refute  Rsim.Config.repo().get(Rsim.EctoImage, image_id_1)
-    refute  Rsim.Config.repo().get(Rsim.EctoImage, image_id_2)
+    refute Rsim.Config.repo().get(Rsim.EctoImage, image_id_1)
+    refute Rsim.Config.repo().get(Rsim.EctoImage, image_id_2)
   end
 end

@@ -10,7 +10,8 @@ defmodule Rsim.S3Storage do
   @doc """
   Save file to storage
   """
-  @spec save(source_file :: String.t(), key :: String.t(), opts :: Map) :: :ok | {:error, String.t()}
+  @spec save(source_file :: String.t(), key :: String.t(), opts :: Map) ::
+          :ok | {:error, String.t()}
   @impl Rsim.Storage
   def save(source_file, key, opts \\ %{}) do
     opts =
@@ -18,6 +19,7 @@ defmodule Rsim.S3Storage do
       |> Map.put_new(:acl, :public_read)
 
     source_file = File.read!(source_file)
+
     case S3.put_object(s3_bucket(), key, source_file, opts) |> ExAws.request() do
       {:ok, response} ->
         case response.status_code do
@@ -44,7 +46,7 @@ defmodule Rsim.S3Storage do
   Delete files from storage
   """
   @impl Rsim.Storage
-  @spec delete_all(keys :: [String.t]) :: :ok | {:error, String.t()}
+  @spec delete_all(keys :: [String.t()]) :: :ok | {:error, String.t()}
   def delete_all(keys) do
     S3.delete_all_objects(s3_bucket(), keys)
     :ok

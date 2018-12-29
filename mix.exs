@@ -8,7 +8,8 @@ defmodule Rsim.MixProject do
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      description: "Image manager, allows to upload images to AWS S3, resize image and save to DB",
+      description:
+        "Image manager, allows to upload images to AWS S3, resize image and save to DB",
       package: package(),
       source_url: "https://github.com/radzserg/rsim",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -56,8 +57,7 @@ defmodule Rsim.MixProject do
 
       # test
       {:mox, "~> 0.4.0", only: :test},
-
-      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.19", only: :dev, runtime: false}
     ]
   end
 

@@ -7,7 +7,7 @@ defmodule Rsim.ImageFetcher do
   Returns image url for provided Rsim.Image
   {:ok, image_url} = Rsim.ImageFetcher.get_image_url(image)
   """
-  @spec get_image_url(Rsim.Image.t) :: {:ok, String.t} | {:error, String.t}
+  @spec get_image_url(Rsim.Image.t()) :: {:ok, String.t()} | {:error, String.t()}
   def get_image_url(image = %Image{}) do
     Rsim.Config.storage().file_url(image.path)
   end
@@ -16,7 +16,7 @@ defmodule Rsim.ImageFetcher do
   Returns image url for provided Rsim.Image ID
   {:ok, image_url} = Rsim.ImageFetcher.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34")
   """
-  @spec get_image_url(String.t) :: {:ok, String.t} | {:error, String.t}
+  @spec get_image_url(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def get_image_url(id) do
     case find_image(id) do
       nil -> nil
@@ -32,7 +32,7 @@ defmodule Rsim.ImageFetcher do
 
   {:ok, image_url} = Rsim.ImageFetcher.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34", 150, 200)
   """
-  @spec get_image_url(String.t, number, number) :: {:ok, String.t} | {:error, String.t}
+  @spec get_image_url(String.t(), number, number) :: {:ok, String.t()} | {:error, String.t()}
   def get_image_url(image_id, width, height) do
     case find_image(image_id, width, height) do
       nil ->

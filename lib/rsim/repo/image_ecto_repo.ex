@@ -78,8 +78,10 @@ defmodule Rsim.ImageEctoRepo do
   @impl Rsim.ImageRepo
   @spec find_all_sizes_of_image(integer()) :: [Rsim.Image.t()]
   def find_all_sizes_of_image(image_id) do
-    query = from im in Rsim.EctoImage,
+    query =
+      from(im in Rsim.EctoImage,
         where: im.id == ^image_id or im.parent_id == ^image_id
+      )
 
     case Rsim.Config.repo().all(query) do
       nil -> nil
@@ -91,9 +93,9 @@ defmodule Rsim.ImageEctoRepo do
   Deletes all images by provided IDs
   """
   @impl Rsim.ImageRepo
-  @spec delete_all(image_ids :: [String.t]) :: :ok | {:error, String.t}
+  @spec delete_all(image_ids :: [String.t()]) :: :ok | {:error, String.t()}
   def delete_all(image_ids) do
-    query = from im in Rsim.EctoImage, where: im.id in ^image_ids
+    query = from(im in Rsim.EctoImage, where: im.id in ^image_ids)
 
     Rsim.Config.repo().delete_all(query)
     :ok

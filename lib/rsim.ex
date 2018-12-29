@@ -160,7 +160,8 @@ defmodule Rsim do
     We keep image type to easily relate images with different tables that have images
   `image_id` - UUID from `images.id`
   """
-  @spec save_image_from_url(url :: String.t(), image_type :: atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
+  @spec save_image_from_url(url :: String.t(), image_type :: atom()) ::
+          {:ok, Rsim.Image.t()} | {:ok, :atom}
   defdelegate save_image_from_url(url, image_type), to: Rsim.ImageManager
 
   @doc """
@@ -173,7 +174,8 @@ defmodule Rsim do
     We keep image type to easily relate images with different tables that have images
   `image_id` - UUID from `images.id`
   """
-  @spec save_image_from_file(file_path :: String.t(), image_type :: atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
+  @spec save_image_from_file(file_path :: String.t(), image_type :: atom()) ::
+          {:ok, Rsim.Image.t()} | {:ok, :atom}
   defdelegate save_image_from_file(file_path, image_type), to: Rsim.ImageManager
 
   @doc """
@@ -191,7 +193,8 @@ defmodule Rsim do
     {:ok, image_src} = Rsim.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34", 200, 150)
 
   """
-  @spec get_image_url(image_id :: String.t(), width :: number, height :: number) :: {:ok, String.t()} | {:error, String.t()}
+  @spec get_image_url(image_id :: String.t(), width :: number, height :: number) ::
+          {:ok, String.t()} | {:error, String.t()}
   defdelegate get_image_url(image_id, width, height), to: Rsim.ImageFetcher, as: :get_image_url
 
   @doc """
@@ -200,6 +203,6 @@ defmodule Rsim do
     :ok = Rsim.delete_image("2f8e8e23-ee58-47bb-9610-6881652a1f34")
 
   """
-  @spec delete_image(image_id :: String.t) :: :ok | {:error, String.t}
+  @spec delete_image(image_id :: String.t()) :: :ok | {:error, String.t()}
   defdelegate delete_image(image_id), to: Rsim.ImageManager, as: :delete_image
 end
