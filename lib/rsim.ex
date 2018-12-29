@@ -160,7 +160,7 @@ defmodule Rsim do
   `image_id` - UUID from `images.id`
   """
   @spec save_image_from_url(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
-  defdelegate save_image_from_url(url, image_type), to: Rsim.StorageUploader
+  defdelegate save_image_from_url(url, image_type), to: Rsim.ImageManager
 
   @doc """
   Saves image from local path, returns image_id
@@ -172,7 +172,7 @@ defmodule Rsim do
   `image_id` - UUID from `images.id`
   """
   @spec save_image_from_file(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
-  defdelegate save_image_from_file(file_path, image_type), to: Rsim.StorageUploader
+  defdelegate save_image_from_file(file_path, image_type), to: Rsim.ImageManager
 
   @doc """
   Returns image URL for image

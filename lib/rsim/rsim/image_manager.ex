@@ -1,4 +1,4 @@
-defmodule Rsim.StorageUploader do
+defmodule Rsim.ImageManager do
   @moduledoc """
   Helper to get basic file info
   """
@@ -97,6 +97,10 @@ defmodule Rsim.StorageUploader do
       {:error, error} ->
         {:error, error}
     end
+  end
+
+  def delete_image(image_id) do
+    #Rsim.Config.storage().delete(file_path, storage_path)
   end
 
   defp save_image_to_repo(image = %Image{}) do

@@ -1,12 +1,12 @@
-defmodule RsimTest.StorageUploaderTest do
+defmodule RsimTest.ImageManagerTest do
   use ExUnit.Case, async: true
-  doctest Rsim.StorageUploader
+  doctest Rsim.ImageManager
 
   import Mox
 
   setup :verify_on_exit!
 
-  alias Rsim.StorageUploader
+  alias Rsim.ImageManager
   alias Rsim.Image
 
   @valid_image_url "https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png"
@@ -32,7 +32,7 @@ defmodule RsimTest.StorageUploaderTest do
     Rsim.ImageMeterMock
     |> expect(:size, fn _ -> {:ok, 500, 100} end)
 
-    {:ok, image} = StorageUploader.save_image_from_url(@valid_image_url, :users)
+    {:ok, image} = ImageManager.save_image_from_url(@valid_image_url, :users)
     assert %Image{} = image
     assert "image/png" == image.mime
     assert 100 == image.size
@@ -44,7 +44,7 @@ defmodule RsimTest.StorageUploaderTest do
   end
 
   test "it returns error if file cannot be downloaded" do
-    {:error, :not_exists} = StorageUploader.save_image_from_url(@invalid_image_url, :users)
+    {:error, :not_exists} = ImageManager.save_image_from_url(@invalid_image_url, :users)
   end
 
   test "it returns error if file cannot be saved to storage" do
@@ -54,7 +54,7 @@ defmodule RsimTest.StorageUploaderTest do
     Rsim.ImageMeterMock
     |> expect(:size, fn _ -> {:ok, 200, 300} end)
 
-    {:error, :not_exists} = StorageUploader.save_image_from_url(@valid_image_url, :users)
+    {:error, :not_exists} = ImageManager.save_image_from_url(@valid_image_url, :users)
   end
 
   test "it returns error if image cannot be saved to repo" do
@@ -70,7 +70,7 @@ defmodule RsimTest.StorageUploaderTest do
     Rsim.ImageMeterMock
     |> expect(:size, fn _ -> {:ok, 200, 300} end)
 
-    {:error, _error} = StorageUploader.save_image_from_url(url, :users)
+    {:error, _error} = ImageManager.save_image_from_url(url, :users)
   end
 
   test "it uploads resized image" do
@@ -106,7 +106,7 @@ defmodule RsimTest.StorageUploaderTest do
     Rsim.ImageRepoMock
     |> expect(:save, fn %Image{} -> {:ok, resized_image} end)
 
-    assert {:ok, image} = StorageUploader.save_resized_image(resized_image_path, original_image)
+    assert {:ok, image} = ImageManager.save_resized_image(resized_image_path, original_image)
     assert %Image{} = image
     assert "image/png" == image.mime
     assert 100 == image.size
@@ -138,7 +138,7 @@ defmodule RsimTest.StorageUploaderTest do
     |> expect(:size, fn _ -> {:ok, 500, 100} end)
 
     file_path = System.cwd() <> "/test/files/10x10.jpg"
-    {:ok, image} = StorageUploader.save_image_from_file(file_path, :users, "original_image.jpg")
+    {:ok, image} = ImageManager.save_image_from_file(file_path, :users, "original_image.jpg")
     assert %Image{} = image
     assert "image/png" == image.mime
     assert 100 == image.size
@@ -147,5 +147,9 @@ defmodule RsimTest.StorageUploaderTest do
     assert image.path
     assert 500 == image.width
     assert 400 == image.height
+  end
+
+  test "it deletes image from repo and storage" do
+    {:ok, image} = ImageManager.save_image_from_url(@valid_image_url, :users)
   end
 end

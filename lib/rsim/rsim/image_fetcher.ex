@@ -59,6 +59,6 @@ defmodule Rsim.ImageFetcher do
     Path.dirname(tmp_dest_path) |> File.mkdir_p!()
     :ok = Rsim.Config.resizer().resize(tmp_path, tmp_dest_path, width, height)
 
-    Rsim.StorageUploader.save_resized_image(tmp_dest_path, original_image)
+    Rsim.ImageManager.save_resized_image(tmp_dest_path, original_image)
   end
 end
