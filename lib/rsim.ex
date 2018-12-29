@@ -153,7 +153,7 @@ defmodule Rsim do
   @doc """
   Saves image provided via URL, returns image_id
 
-    {:ok, image_id} = Rsim.save_image_from_url("http://example.com/path/to/image.jpg", :user)
+      {:ok, image_id} = Rsim.save_image_from_url("http://example.com/path/to/image.jpg", :user)
 
   `url` - is URL to the image
   `image_type` - allows to keep different image types. For exmaple, for `users` table it could be :user.
@@ -167,7 +167,7 @@ defmodule Rsim do
   @doc """
   Saves image from local path, returns image_id
 
-    {:ok, image_id} = Rsim.save_image_from_url("/path/to/local/file", :user)
+      {:ok, image_id} = Rsim.save_image_from_url("/path/to/local/file", :user)
 
   `path` - is path to local file
   `image_type` - allows to keep different image types. For exmaple, for `users` table it could be :user.
@@ -181,7 +181,7 @@ defmodule Rsim do
   @doc """
   Returns image URL for image
 
-    {:ok, image_src} = Rsim.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34")
+      {:ok, image_src} = Rsim.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34")
 
   """
   @spec get_image_url(image_id :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
@@ -190,7 +190,7 @@ defmodule Rsim do
   @doc """
   Returns image URL for image. Resize image if resized copy is missing.
 
-    {:ok, image_src} = Rsim.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34", 200, 150)
+      {:ok, image_src} = Rsim.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34", 200, 150)
 
   """
   @spec get_image_url(image_id :: String.t(), width :: number, height :: number) ::
@@ -200,7 +200,7 @@ defmodule Rsim do
   @doc """
   Deletes image and all resized copies.
 
-    :ok = Rsim.delete_image("2f8e8e23-ee58-47bb-9610-6881652a1f34")
+      :ok = Rsim.delete_image("2f8e8e23-ee58-47bb-9610-6881652a1f34")
 
   """
   @spec delete_image(image_id :: String.t()) :: :ok | {:error, String.t()}

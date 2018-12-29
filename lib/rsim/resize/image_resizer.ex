@@ -6,5 +6,10 @@ defmodule Rsim.ImageResizer do
   @doc """
   Resize provided image to specified size, saves to dest path
   """
-  @callback resize(String.t(), String.t(), number, number) :: :ok | {:error, String.t()}
+  @callback resize(
+              src_path :: String.t(),
+              dest_path :: String.t(),
+              width :: number,
+              height :: number
+            ) :: :ok | {:error, String.t()}
 end

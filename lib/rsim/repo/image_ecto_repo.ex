@@ -11,10 +11,11 @@ defmodule Rsim.ImageEctoRepo do
   @doc """
   Save Rsim.Image to repo, returns Rsim.EctoImage
 
-  {:ok, rsim_ecto_image} = Rsim.ImageEctoRepo.save(rsim_image)
+      {:ok, rsim_ecto_image} = Rsim.ImageEctoRepo.save(rsim_image)
+
   """
   @impl Rsim.ImageRepo
-  @spec save(Rsim.Image.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
+  @spec save(image :: Rsim.Image.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
   def save(image = %Image{}) do
     params = Map.from_struct(image)
     changeset = add_changeset(params)
@@ -24,10 +25,12 @@ defmodule Rsim.ImageEctoRepo do
   @doc """
   Save Rsim.Image to repo with provided parent_id, returns Rsim.EctoImage
 
-  {:ok, rsim_ecto_image} = Rsim.ImageEctoRepo.save(rsim_image)
+      {:ok, rsim_ecto_image} = Rsim.ImageEctoRepo.save(rsim_image)
+
   """
   @impl Rsim.ImageRepo
-  @spec save(Rsim.Image.t(), String.t()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
+  @spec save(image :: Rsim.Image.t(), parent_image_id :: String.t()) ::
+          {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
   def save(image = %Image{}, parent_image_id) do
     params =
       Map.from_struct(image)
@@ -40,10 +43,11 @@ defmodule Rsim.ImageEctoRepo do
   @doc """
   Find image in repo by id, return Rsim.Image
 
-  rsim_image = Rsim.ImageEctoRepo.find(image_id)
+      rsim_image = Rsim.ImageEctoRepo.find(image_id)
+
   """
   @impl Rsim.ImageRepo
-  @spec find(String.t()) :: Rsim.Image.t() | nil
+  @spec find(image_id :: String.t()) :: Rsim.Image.t() | nil
   def find(image_id) do
     case Rsim.Config.repo().get(EctoImage, image_id) do
       nil -> nil
@@ -54,10 +58,12 @@ defmodule Rsim.ImageEctoRepo do
   @doc """
   Find image in repo by id
 
-  rsim_image = Rsim.ImageEctoRepo.find(image_id, 200, 150)
+      rsim_image = Rsim.ImageEctoRepo.find(image_id, 200, 150)
+
   """
   @impl Rsim.ImageRepo
-  @spec find(String.t(), integer(), integer()) :: Rsim.Image.t() | nil
+  @spec find(image_id :: String.t(), width :: integer(), height :: integer()) ::
+          Rsim.Image.t() | nil
   def find(image_id, width, height) do
     query =
       from(im in Rsim.EctoImage,
@@ -76,7 +82,7 @@ defmodule Rsim.ImageEctoRepo do
   Return original image and all resized copies
   """
   @impl Rsim.ImageRepo
-  @spec find_all_sizes_of_image(integer()) :: [Rsim.Image.t()]
+  @spec find_all_sizes_of_image(image_id :: integer()) :: [Rsim.Image.t()]
   def find_all_sizes_of_image(image_id) do
     query =
       from(im in Rsim.EctoImage,

@@ -5,18 +5,22 @@ defmodule Rsim.ImageFetcher do
 
   @doc """
   Returns image url for provided Rsim.Image
-  {:ok, image_url} = Rsim.ImageFetcher.get_image_url(image)
+
+      {:ok, image_url} = Rsim.ImageFetcher.get_image_url(image)
+
   """
-  @spec get_image_url(Rsim.Image.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec get_image_url(image :: Rsim.Image.t()) :: {:ok, String.t()} | {:error, String.t()}
   def get_image_url(image = %Image{}) do
     Rsim.Config.storage().file_url(image.path)
   end
 
   @doc """
   Returns image url for provided Rsim.Image ID
-  {:ok, image_url} = Rsim.ImageFetcher.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34")
+
+      {:ok, image_url} = Rsim.ImageFetcher.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34")
+
   """
-  @spec get_image_url(String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec get_image_url(id :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def get_image_url(id) do
     case find_image(id) do
       nil -> nil
@@ -30,9 +34,11 @@ defmodule Rsim.ImageFetcher do
   If resized image does not exist - parent image will be resized and saved to storage and repo,
   resized image url will be returned.
 
-  {:ok, image_url} = Rsim.ImageFetcher.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34", 150, 200)
+      {:ok, image_url} = Rsim.ImageFetcher.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34", 150, 200)
+
   """
-  @spec get_image_url(String.t(), number, number) :: {:ok, String.t()} | {:error, String.t()}
+  @spec get_image_url(image_id :: String.t(), width :: number, height :: number) ::
+          {:ok, String.t()} | {:error, String.t()}
   def get_image_url(image_id, width, height) do
     case find_image(image_id, width, height) do
       nil ->

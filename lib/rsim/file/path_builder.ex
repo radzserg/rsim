@@ -8,7 +8,7 @@ defmodule Rsim.PathBuilder do
 
   "users/id/filename.jpg" == Rsim.PathBuilder.key_from_path("/path/to/filename.jpg", "users", id)
   """
-  @spec key_from_path(String.t(), String.t(), String.t()) :: String.t()
+  @spec key_from_path(path :: String.t(), prefix :: String.t(), id :: String.t()) :: String.t()
   def key_from_path(path, prefix, id) do
     basename = Path.basename(path)
     path = "#{prefix}/#{id}/#{basename}"
@@ -18,9 +18,15 @@ defmodule Rsim.PathBuilder do
   @doc """
   Builds key for a storage from provided path.
 
-  "users/parent_id/id/filename.jpg" == Rsim.PathBuilder.key_from_path_with_parent("/path/to/filename.jpg", "users", id, parent_id)
+      "users/parent_id/id/filename.jpg" == Rsim.PathBuilder.key_from_path_with_parent("/path/to/filename.jpg", "users", id, parent_id)
+
   """
-  @spec key_from_path_with_parent(String.t(), String.t(), String.t(), String.t()) :: String.t()
+  @spec key_from_path_with_parent(
+          path :: String.t(),
+          prefix :: String.t(),
+          id :: String.t(),
+          parent_id :: String.t()
+        ) :: String.t()
   def key_from_path_with_parent(path, prefix, id, parent_id) do
     uri = URI.parse(path)
     basename = Path.basename(uri.path)
@@ -31,9 +37,10 @@ defmodule Rsim.PathBuilder do
   @doc """
   Builds path to save file temporary
 
-  "/tmp/unique_dir/filename.jpg" == Rsim.PathBuilder.tmp_path_from_url("http://example.com/path/filename.jpg")
+      "/tmp/unique_dir/filename.jpg" == Rsim.PathBuilder.tmp_path_from_url("http://example.com/path/filename.jpg")
+
   """
-  @spec tmp_path_from_url(String.t()) :: String.t()
+  @spec tmp_path_from_url(url :: String.t()) :: String.t()
   def tmp_path_from_url(url) do
     uri = URI.parse(url)
     basename = Path.basename(uri.path)

@@ -6,10 +6,13 @@ defmodule Rsim.ImageMeterMogrify do
   @impl Rsim.ImageMeter
   @doc """
   Defines image size by provided file path
-  {:ok, width, height} = Rsim.ImageMeterMogrify.size("/path/to/image.jpg")
+
+      {:ok, width, height} = Rsim.ImageMeterMogrify.size("/path/to/image.jpg")
+
   """
-  def size(src) do
-    image = open(src) |> verbose
+  @spec size(path :: String.t()) :: {:ok, number, number} | {:error, String.t()}
+  def size(path) do
+    image = open(path) |> verbose
     {:ok, image.width, image.height}
   end
 end

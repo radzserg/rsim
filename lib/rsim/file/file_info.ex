@@ -6,9 +6,10 @@ defmodule Rsim.FileInfo do
   @doc """
   Defines mime type for an image
 
-  mime = Rsim.FileInfo.get_mime!("/path/to/file")
+      mime = Rsim.FileInfo.get_mime!("/path/to/file")
+
   """
-  @spec get_mime!(String.t()) :: String.t()
+  @spec get_mime!(path :: String.t()) :: String.t()
   def get_mime!(path) do
     {result, 0} = System.cmd("file", ["--mime-type" | [path]])
 
@@ -22,9 +23,10 @@ defmodule Rsim.FileInfo do
   @doc """
   Defines file size in bytes
 
-  file_size_in_bytes = Rsim.FileInfo.get_size!("/path/to/file")
+      file_size_in_bytes = Rsim.FileInfo.get_size!("/path/to/file")
+
   """
-  @spec get_size!(String.t()) :: number
+  @spec get_size!(path :: String.t()) :: number
   def get_size!(path) do
     stat = File.stat!(path)
     stat.size
