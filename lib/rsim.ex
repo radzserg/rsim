@@ -152,40 +152,54 @@ defmodule Rsim do
 
   @doc """
   Saves image provided via URL, returns image_id
-  {:ok, image_id} = Rsim.save_image_from_url("http://example.com/path/to/image.jpg", :user)
+
+    {:ok, image_id} = Rsim.save_image_from_url("http://example.com/path/to/image.jpg", :user)
 
   `url` - is URL to the image
-  `image_type` - identificator for image type. For `users` table it could be :user. We keep image type
-    to easily relate images with different tables that have images
+  `image_type` - allows to keep different image types. For exmaple, for `users` table it could be :user.
+    We keep image type to easily relate images with different tables that have images
   `image_id` - UUID from `images.id`
   """
-  @spec save_image_from_url(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
+  @spec save_image_from_url(url :: String.t(), image_type :: atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
   defdelegate save_image_from_url(url, image_type), to: Rsim.ImageManager
 
   @doc """
   Saves image from local path, returns image_id
-  {:ok, image_id} = Rsim.save_image_from_url("/path/to/local/file", :user)
+
+    {:ok, image_id} = Rsim.save_image_from_url("/path/to/local/file", :user)
 
   `path` - is path to local file
-  `image_type` - identificator for image type. For `users` table it could be :user. We keep image type
-    to easily relate images with different tables that have images
+  `image_type` - allows to keep different image types. For exmaple, for `users` table it could be :user.
+    We keep image type to easily relate images with different tables that have images
   `image_id` - UUID from `images.id`
   """
-  @spec save_image_from_file(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
+  @spec save_image_from_file(file_path :: String.t(), image_type :: atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
   defdelegate save_image_from_file(file_path, image_type), to: Rsim.ImageManager
 
   @doc """
   Returns image URL for image
-  {:ok, image_src} = Rsim.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34")
+
+    {:ok, image_src} = Rsim.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34")
+
   """
-  @spec get_image_url(String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  @spec get_image_url(image_id :: String.t()) :: {:ok, String.t()} | {:error, String.t()}
   defdelegate get_image_url(image_id), to: Rsim.ImageFetcher, as: :get_image_url
 
   @doc """
   Returns image URL for image. Resize image if resized copy is missing.
 
-  {:ok, image_src} = Rsim.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34", 200, 150)
+    {:ok, image_src} = Rsim.get_image_url("2f8e8e23-ee58-47bb-9610-6881652a1f34", 200, 150)
+
   """
-  @spec get_image_url(String.t(), number, number) :: {:ok, String.t()} | {:error, String.t()}
+  @spec get_image_url(image_id :: String.t(), width :: number, height :: number) :: {:ok, String.t()} | {:error, String.t()}
   defdelegate get_image_url(image_id, width, height), to: Rsim.ImageFetcher, as: :get_image_url
+
+  @doc """
+  Deletes image and all resized copies.
+
+    :ok = Rsim.delete_image("2f8e8e23-ee58-47bb-9610-6881652a1f34")
+
+  """
+  @spec delete_image(image_id :: String.t) :: :ok | {:error, String.t}
+  defdelegate delete_image(image_id), to: Rsim.ImageManager, as: :delete_image
 end
