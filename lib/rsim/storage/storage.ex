@@ -19,7 +19,7 @@ defmodule Rsim.Storage do
   @callback save(String.t(), String.t()) :: :ok | {:error, String.t()}
 
   @doc """
-  Delete file to storage
+  Delete files from storage
   """
-  @callback delete(String.t(), String.t()) :: :ok | {:error, String.t()}
+  @callback delete_all([String.t]) :: :ok | {:error, String.t()}
 end
