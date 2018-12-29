@@ -10,9 +10,9 @@ defmodule Rsim.S3Storage do
   @doc """
   Save file to storage
   """
-  @spec save_file(String.t(), String.t(), Map) :: :ok | {:error, String.t()}
+  @spec save(String.t(), String.t(), Map) :: :ok | {:error, String.t()}
   @impl Rsim.Storage
-  def save_file(source_file, key, opts \\ %{}) do
+  def save(source_file, key, opts \\ %{}) do
     opts =
       opts
       |> Map.put_new(:acl, :public_read)

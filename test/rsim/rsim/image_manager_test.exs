@@ -24,7 +24,7 @@ defmodule RsimTest.ImageManagerTest do
     }
 
     Rsim.StorageMock
-    |> expect(:save_file, fn _, _ -> :ok end)
+    |> expect(:save, fn _, _ -> :ok end)
 
     Rsim.ImageRepoMock
     |> expect(:save, fn %Image{} -> {:ok, ecto_image} end)
@@ -49,7 +49,7 @@ defmodule RsimTest.ImageManagerTest do
 
   test "it returns error if file cannot be saved to storage" do
     Rsim.StorageMock
-    |> expect(:save_file, fn _, _ -> {:error, :not_exists} end)
+    |> expect(:save, fn _, _ -> {:error, :not_exists} end)
 
     Rsim.ImageMeterMock
     |> expect(:size, fn _ -> {:ok, 200, 300} end)
@@ -62,7 +62,7 @@ defmodule RsimTest.ImageManagerTest do
     error = %Ecto.Changeset{}
 
     Rsim.StorageMock
-    |> expect(:save_file, fn _, _ -> :ok end)
+    |> expect(:save, fn _, _ -> :ok end)
 
     Rsim.ImageRepoMock
     |> expect(:save, fn %Image{} -> {:error, error} end)
@@ -98,7 +98,7 @@ defmodule RsimTest.ImageManagerTest do
     resized_image_path = System.cwd() <> "/test/files/1x1.png"
 
     Rsim.StorageMock
-    |> expect(:save_file, fn ^resized_image_path, _ -> :ok end)
+    |> expect(:save, fn ^resized_image_path, _ -> :ok end)
 
     Rsim.ImageMeterMock
     |> expect(:size, fn _ -> {:ok, 200, 300} end)
@@ -129,7 +129,7 @@ defmodule RsimTest.ImageManagerTest do
     }
 
     Rsim.StorageMock
-    |> expect(:save_file, fn _, _ -> :ok end)
+    |> expect(:save, fn _, _ -> :ok end)
 
     Rsim.ImageRepoMock
     |> expect(:save, fn %Image{} -> {:ok, ecto_image} end)
@@ -150,6 +150,19 @@ defmodule RsimTest.ImageManagerTest do
   end
 
   test "it deletes image from repo and storage" do
-    {:ok, image} = ImageManager.save_image_from_url(@valid_image_url, :users)
+    image = %Rsim.Image{
+      id: "2f8e8e23-ee58-47bb-9610-6881652a1f34",
+      mime: "image/png",
+      path: "user/uniq/image.jpg",
+      size: 100,
+      width: 500,
+      height: 400,
+      type: "users"
+    }
+    image_id = image.id
+    Rsim.ImageRepoMock
+      |> expect(:find_all_sizes_of_image, fn ^image_id -> [image] end)
+
+    ImageManager.delete_image(image.id)
   end
 end

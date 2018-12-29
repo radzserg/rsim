@@ -11,10 +11,15 @@ defmodule Rsim.Storage do
   @doc """
   Save file to storage
   """
-  @callback save_file(String.t(), String.t(), Map) :: :ok | {:error, String.t()}
+  @callback save(String.t(), String.t(), Map) :: :ok | {:error, String.t()}
 
   @doc """
   Save file to storage
   """
-  @callback save_file(String.t(), String.t()) :: :ok | {:error, String.t()}
+  @callback save(String.t(), String.t()) :: :ok | {:error, String.t()}
+
+  @doc """
+  Delete file to storage
+  """
+  @callback delete(String.t(), String.t()) :: :ok | {:error, String.t()}
 end

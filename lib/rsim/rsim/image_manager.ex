@@ -44,7 +44,7 @@ defmodule Rsim.ImageManager do
 
     storage_path = build_storage_key(image_type, id, file_path, filename)
 
-    case Rsim.Config.storage().save_file(file_path, storage_path) do
+    case Rsim.Config.storage().save(file_path, storage_path) do
       :ok ->
         image = %Image{
           id: id,
@@ -80,7 +80,7 @@ defmodule Rsim.ImageManager do
 
     storage_path = PathBuilder.key_from_path_with_parent(file_path, parent_image.type, id, parent_image.id)
 
-    case Rsim.Config.storage().save_file(file_path, storage_path) do
+    case Rsim.Config.storage().save(file_path, storage_path) do
       :ok ->
         image = %Image{
           id: id,
@@ -100,7 +100,12 @@ defmodule Rsim.ImageManager do
   end
 
   def delete_image(image_id) do
-    #Rsim.Config.storage().delete(file_path, storage_path)
+    Rsim.Config.image_repo().find_all_sizes_of_image(image_id)
+      |> Enum.map(&delete_image_from_storage/1)
+  end
+
+  defp delete_image_from_storage(image = %Image{}) do
+    # Rsim.Config.storage().save(file_path, storage_path)
   end
 
   defp save_image_to_repo(image = %Image{}) do

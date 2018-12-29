@@ -108,7 +108,7 @@ defmodule RsimTest.ImageEctoRepoTest do
       parent_id: image.id
     })
 
-    images =ImageEctoRepo.find_all_sizes_of_image(image.id)
+    images = ImageEctoRepo.find_all_sizes_of_image(image.id)
     image_ids = Enum.map(images, &(&1.id))
     assert [image.id, resized_image.id] == image_ids
   end

@@ -80,7 +80,7 @@ defmodule RsimTest.ImageFetcherTest do
     Rsim.StorageMock
     |> expect(:file_url, fn ^image_path -> {:ok, "http://original-image.com/url"} end)
     |> expect(:file_url, fn _ -> {:ok, expected_url} end)
-    |> expect(:save_file, fn _, _ -> :ok end)
+    |> expect(:save, fn _, _ -> :ok end)
 
     Rsim.ImageResizerMock
     |> expect(:resize, fn source, dest, ^width, ^height ->
