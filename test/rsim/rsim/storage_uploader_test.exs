@@ -118,6 +118,34 @@ defmodule RsimTest.StorageUploaderTest do
   end
 
   test "it saves uploaded image to storage" do
-    # StorageUploader.save_image_from_file(url, :users)
+    ecto_image = %Rsim.EctoImage{
+      id: "2f8e8e23-ee58-47bb-9610-6881652a1f35",
+      mime: "image/png",
+      path: "user/uniq/image.jpg",
+      size: 100,
+      width: 500,
+      height: 400,
+      type: "users"
+    }
+
+    Rsim.StorageMock
+    |> expect(:save_file, fn _, _ -> :ok end)
+
+    Rsim.ImageRepoMock
+    |> expect(:save, fn %Image{} -> {:ok, ecto_image} end)
+
+    Rsim.ImageMeterMock
+    |> expect(:size, fn _ -> {:ok, 500, 100} end)
+
+    file_path = System.cwd() <> "/test/files/10x10.jpg"
+    {:ok, image} = StorageUploader.save_image_from_file(file_path, :users, "original_image.jpg")
+    assert %Image{} = image
+    assert "image/png" == image.mime
+    assert 100 == image.size
+    assert "users" == image.type
+    assert image.id
+    assert image.path
+    assert 500 == image.width
+    assert 400 == image.height
   end
 end

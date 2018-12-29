@@ -10,8 +10,7 @@ defmodule Rsim.PathBuilder do
   """
   @spec key_from_path(String.t(), String.t(), String.t()) :: String.t()
   def key_from_path(path, prefix, id) do
-    uri = URI.parse(path)
-    basename = Path.basename(uri.path)
+    basename = Path.basename(path)
     path = "#{prefix}/#{id}/#{basename}"
     path
   end

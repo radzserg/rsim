@@ -28,16 +28,21 @@ defmodule Rsim.StorageUploader do
   Saves image from provided file path.
 
   It saves image to storage and repo. It returns ID of created image
+
+  ## Examples
+    {:ok, image} = Rsim.save_image_from_file("/path/to/image.jpg", :user)
+    %Plug.Upload{} = uploaded_file
+    {:ok, image} = Rsim.save_image_from_file(uploaded_file.path, :user, uploaded_file.filename)
   """
   @spec save_image_from_file(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
-  def save_image_from_file(file_path, image_type) do
+  def save_image_from_file(file_path, image_type, filename \\ nil) do
     mime = FileInfo.get_mime!(file_path)
     size = FileInfo.get_size!(file_path)
     id = UUID.uuid4()
 
     {:ok, width, height} = Rsim.Config.meter().size(file_path)
 
-    storage_path = PathBuilder.key_from_path(file_path, Atom.to_string(image_type), id)
+    storage_path = build_storage_key(image_type, id, file_path, filename)
 
     case Rsim.Config.storage().save_file(file_path, storage_path) do
       :ok ->
@@ -57,6 +62,12 @@ defmodule Rsim.StorageUploader do
         {:error, error}
     end
   end
+
+  defp build_storage_key(image_type, id, file_path, filename) when is_nil(filename),
+       do: PathBuilder.key_from_path(file_path, Atom.to_string(image_type), id)
+  defp build_storage_key(image_type, id, _file_path, filename),
+    do: PathBuilder.key_from_path(filename, Atom.to_string(image_type), id)
+
 
   @doc """
   Saves resized image for specified
