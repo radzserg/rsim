@@ -86,4 +86,30 @@ defmodule RsimTest.ImageEctoRepoTest do
     assert %Rsim.Image{} = found_image
     assert found_image.id == resized_ecto_image.id
   end
+
+  test "it returns all sizes of image" do
+    {:ok, image} = Rsim.Config.repo().insert(%Rsim.EctoImage{
+      id: UUID.uuid4(),
+      type: "user",
+      path: "user/uniq/image.jpg",
+      mime: "image/png",
+      size: 100,
+      width: 100,
+      height: 200
+    })
+    {:ok, resized_image} = Rsim.Config.repo().insert(%Rsim.EctoImage{
+      id: UUID.uuid4(),
+      type: "user",
+      path: "user/uniq/image.jpg",
+      mime: "image/png",
+      size: 80,
+      width: 50,
+      height: 100,
+      parent_id: image.id
+    })
+
+    images =ImageEctoRepo.find_all_sizes_of_image(image.id)
+    image_ids = Enum.map(images, &(&1.id))
+    assert [image.id, resized_image.id] == image_ids
+  end
 end

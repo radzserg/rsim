@@ -72,6 +72,18 @@ defmodule Rsim.ImageEctoRepo do
     end
   end
 
+  @impl Rsim.ImageRepo
+  @spec find_all_sizes_of_image(integer()) :: [Rsim.Image.t()]
+  def find_all_sizes_of_image(image_id) do
+    query = from im in Rsim.EctoImage,
+        where: im.id == ^image_id or im.parent_id == ^image_id
+
+    case Rsim.Config.repo().all(query) do
+      nil -> nil
+      ecto_images -> Enum.map(ecto_images, &EctoImage.to_image/1)
+    end
+  end
+
   defp add_changeset(params) do
     %EctoImage{}
     |> cast(params, [:id, :type, :path, :size, :mime, :width, :height, :parent_id])

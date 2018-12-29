@@ -23,4 +23,9 @@ defmodule Rsim.ImageRepo do
   Find image in repo by id width and height
   """
   @callback find(String.t(), integer(), integer()) :: Rsim.Image.t() | nil
+
+  @doc """
+  Find all sizes for provided image ID
+  """
+  @callback find_all_sizes_of_image(integer()) :: [Rsim.Image.t()]
 end
