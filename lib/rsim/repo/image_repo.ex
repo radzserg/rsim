@@ -28,4 +28,9 @@ defmodule Rsim.ImageRepo do
   Find all sizes for provided image ID
   """
   @callback find_all_sizes_of_image(integer()) :: [Rsim.Image.t()]
+
+  @doc """
+  Deletes all images by provided IDs
+  """
+  @callback delete_all(image_ids :: [String.t]) :: :ok | {:error, String.t}
 end

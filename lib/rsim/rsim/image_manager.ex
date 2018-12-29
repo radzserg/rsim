@@ -13,7 +13,7 @@ defmodule Rsim.ImageManager do
 
   It saves image to storage and repo. It returns ID of created image
   """
-  @spec save_image_from_url(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
+  @spec save_image_from_url(url :: String.t(), image_type :: atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
   def save_image_from_url(url, image_type) do
     case ImageDownloader.to_tmp_file(url) do
       {:ok, tmp_path} ->
@@ -34,7 +34,7 @@ defmodule Rsim.ImageManager do
     %Plug.Upload{} = uploaded_file
     {:ok, image} = Rsim.save_image_from_file(uploaded_file.path, :user, uploaded_file.filename)
   """
-  @spec save_image_from_file(String.t(), atom()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
+  @spec save_image_from_file(file_path :: String.t(), image_type :: atom(), filename :: String.t) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
   def save_image_from_file(file_path, image_type, filename \\ nil) do
     mime = FileInfo.get_mime!(file_path)
     size = FileInfo.get_size!(file_path)
@@ -72,7 +72,7 @@ defmodule Rsim.ImageManager do
   @doc """
   Saves resized image for specified
   """
-  @spec save_image_from_file(String.t(), Rsim.Image.t()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
+  @spec save_image_from_file(file_path :: String.t(), parent_image :: Rsim.Image.t()) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
   def save_resized_image(file_path, parent_image = %Image{}) do
     id = UUID.uuid4()
     size = FileInfo.get_size!(file_path)
@@ -99,13 +99,16 @@ defmodule Rsim.ImageManager do
     end
   end
 
+  @doc """
+  Deletes image and all resized copies
+  """
+  @spec delete_image(image_id :: String.t) :: :ok | {:error, String.t}
   def delete_image(image_id) do
-    Rsim.Config.image_repo().find_all_sizes_of_image(image_id)
-      |> Enum.map(&delete_image_from_storage/1)
-  end
+    images = Rsim.Config.image_repo().find_all_sizes_of_image(image_id)
 
-  defp delete_image_from_storage(image = %Image{}) do
-    # Rsim.Config.storage().save(file_path, storage_path)
+    Enum.map(images, &(&1.path))
+      |> Rsim.Config.storage().delete_all()
+
   end
 
   defp save_image_to_repo(image = %Image{}) do

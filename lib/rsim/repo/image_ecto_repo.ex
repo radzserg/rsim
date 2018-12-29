@@ -72,6 +72,9 @@ defmodule Rsim.ImageEctoRepo do
     end
   end
 
+  @doc """
+  Return original image and all resized copies
+  """
   @impl Rsim.ImageRepo
   @spec find_all_sizes_of_image(integer()) :: [Rsim.Image.t()]
   def find_all_sizes_of_image(image_id) do
@@ -82,6 +85,18 @@ defmodule Rsim.ImageEctoRepo do
       nil -> nil
       ecto_images -> Enum.map(ecto_images, &EctoImage.to_image/1)
     end
+  end
+
+  @doc """
+  Deletes all images by provided IDs
+  """
+  @impl Rsim.ImageRepo
+  @spec delete_all(image_ids :: [String.t]) :: :ok | {:error, String.t}
+  def delete_all(image_ids) do
+    query = from im in Rsim.EctoImage, where: im.id in ^image_ids
+
+    Rsim.Config.repo().delete_all(query)
+    :ok
   end
 
   defp add_changeset(params) do

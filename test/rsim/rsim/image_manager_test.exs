@@ -162,6 +162,8 @@ defmodule RsimTest.ImageManagerTest do
     image_id = image.id
     Rsim.ImageRepoMock
       |> expect(:find_all_sizes_of_image, fn ^image_id -> [image] end)
+    Rsim.StorageMock
+    |> expect(:delete_all, fn _ -> :ok end)
 
     ImageManager.delete_image(image.id)
   end
