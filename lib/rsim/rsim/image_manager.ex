@@ -76,6 +76,9 @@ defmodule Rsim.ImageManager do
 
   @doc """
   Saves resized image for specified
+
+      {:ok, resized_image} = Rsim.ImageManager.save_resized_image("/path/to/image.jpg", parent_image)
+
   """
   @spec save_resized_image(file_path :: String.t(), parent_image :: Rsim.Image.t()) ::
           {:ok, Rsim.Image.t()} | {:ok, :atom}
@@ -108,8 +111,12 @@ defmodule Rsim.ImageManager do
 
   @doc """
   Deletes image and all resized copies
+
+      :ok =  Rsim.ImageManager.delete_image(image_id)
+
   """
   @spec delete_image(image_id :: String.t()) :: :ok | {:error, String.t()}
+  def delete_image(image_id) when is_nil(image_id), do: :ok
   def delete_image(image_id) do
     images = Rsim.Config.image_repo().find_all_sizes_of_image(image_id)
 
