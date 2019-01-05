@@ -120,9 +120,10 @@ defmodule Rsim.ImageManager do
   def delete_image(image_id) do
     images = Rsim.Config.image_repo().find_all_sizes_of_image(image_id)
 
-    image_ids = Enum.map(images, & &1.path)
+    image_ids = Enum.map(images, & &1.id)
+    image_keys = Enum.map(images, & &1.path)
     Rsim.Config.storage().delete_all(image_ids)
-    Rsim.Config.image_repo().delete_all(image_ids)
+    Rsim.Config.image_repo().delete_all(image_keys)
     :okx
   end
 
