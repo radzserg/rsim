@@ -122,8 +122,8 @@ defmodule Rsim.ImageManager do
 
     image_ids = Enum.map(images, & &1.id)
     image_keys = Enum.map(images, & &1.path)
-    Rsim.Config.storage().delete_all(image_ids)
-    Rsim.Config.image_repo().delete_all(image_keys)
+    Rsim.Config.storage().delete_all(image_keys)
+    Rsim.Config.image_repo().delete_all(image_ids)
     :okx
   end
 
