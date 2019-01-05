@@ -77,7 +77,7 @@ defmodule Rsim.ImageManager do
   @doc """
   Saves resized image for specified
   """
-  @spec save_image_from_file(file_path :: String.t(), parent_image :: Rsim.Image.t()) ::
+  @spec save_resized_image(file_path :: String.t(), parent_image :: Rsim.Image.t()) ::
           {:ok, Rsim.Image.t()} | {:ok, :atom}
   def save_resized_image(file_path, parent_image = %Image{}) do
     id = UUID.uuid4()

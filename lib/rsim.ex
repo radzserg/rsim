@@ -174,9 +174,12 @@ defmodule Rsim do
     We keep image type to easily relate images with different tables that have images
   `image_id` - UUID from `images.id`
   """
-  @spec save_image_from_file(file_path :: String.t(), image_type :: atom()) ::
-          {:ok, Rsim.Image.t()} | {:ok, :atom}
-  defdelegate save_image_from_file(file_path, image_type), to: Rsim.ImageManager
+  @spec save_image_from_file(
+          file_path :: String.t(),
+          image_type :: atom(),
+          filename :: String.t()
+        ) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
+  defdelegate save_image_from_file(file_path, image_type, filename \\ nil), to: Rsim.ImageManager
 
   @doc """
   Returns image URL for image
