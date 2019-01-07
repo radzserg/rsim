@@ -13,7 +13,13 @@ defmodule Rsim.ImageDownloader do
   """
   @spec to_tmp_file(String.t()) :: {:ok, String.t()} | {:error, String.t()}
   def to_tmp_file(url) do
-    save_tmp_file(url, HTTPoison.get(url))
+    url = String.trim(url)
+
+    if url == "" do
+      {:error, :empty_url}
+    else
+      save_tmp_file(url, HTTPoison.get(url))
+    end
   end
 
   defp save_tmp_file(url, {:ok, %HTTPoison.Response{status_code: 200, body: body}}) do

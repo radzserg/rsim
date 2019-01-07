@@ -23,4 +23,9 @@ defmodule RsimTest.ImageDownloaderTest do
     url = "https://example/1x1.png"
     assert {:error, :nxdomain} = ImageDownloader.to_tmp_file(url)
   end
+
+  test "it do nothing when empty url is provided" do
+    url = "  "
+    assert {:error, :empty_url} == ImageDownloader.to_tmp_file(url)
+  end
 end
