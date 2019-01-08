@@ -27,7 +27,7 @@ defmodule RsimTest.ImageManagerTest do
     |> expect(:save, fn _, _ -> :ok end)
 
     Rsim.ImageRepoMock
-    |> expect(:save, fn %Image{} -> {:ok, ecto_image} end)
+    |> expect(:save, fn %Image{}, nil -> {:ok, ecto_image} end)
 
     Rsim.ImageMeterMock
     |> expect(:size, fn _ -> {:ok, 500, 100} end)
@@ -65,7 +65,7 @@ defmodule RsimTest.ImageManagerTest do
     |> expect(:save, fn _, _ -> :ok end)
 
     Rsim.ImageRepoMock
-    |> expect(:save, fn %Image{} -> {:error, error} end)
+    |> expect(:save, fn %Image{}, _ -> {:error, error} end)
 
     Rsim.ImageMeterMock
     |> expect(:size, fn _ -> {:ok, 200, 300} end)
@@ -83,6 +83,7 @@ defmodule RsimTest.ImageManagerTest do
       height: 400,
       type: "users"
     }
+    original_image_id = original_image.id
 
     resized_image = %Rsim.EctoImage{
       id: "2f8e8e23-ee58-47bb-9610-6881652a1f35",
@@ -104,7 +105,7 @@ defmodule RsimTest.ImageManagerTest do
     |> expect(:size, fn _ -> {:ok, 200, 300} end)
 
     Rsim.ImageRepoMock
-    |> expect(:save, fn %Image{} -> {:ok, resized_image} end)
+    |> expect(:save, fn %Image{}, ^original_image_id -> {:ok, resized_image} end)
 
     assert {:ok, image} = ImageManager.save_resized_image(resized_image_path, original_image)
     assert %Image{} = image
@@ -132,7 +133,7 @@ defmodule RsimTest.ImageManagerTest do
     |> expect(:save, fn _, _ -> :ok end)
 
     Rsim.ImageRepoMock
-    |> expect(:save, fn %Image{} -> {:ok, ecto_image} end)
+    |> expect(:save, fn %Image{}, nil -> {:ok, ecto_image} end)
 
     Rsim.ImageMeterMock
     |> expect(:size, fn _ -> {:ok, 500, 100} end)

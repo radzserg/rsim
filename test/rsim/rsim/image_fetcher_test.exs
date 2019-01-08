@@ -75,7 +75,7 @@ defmodule RsimTest.ImageFetcherTest do
     Rsim.ImageRepoMock
     |> expect(:find, fn ^image_id, ^width, ^height -> nil end)
     |> expect(:find, fn ^image_id -> original_image end)
-    |> expect(:save, fn _ -> {:ok, resized_ecto_image} end)
+    |> expect(:save, fn _, ^image_id -> {:ok, resized_ecto_image} end)
 
     Rsim.StorageMock
     |> expect(:file_url, fn ^image_path -> {:ok, "http://original-image.com/url"} end)

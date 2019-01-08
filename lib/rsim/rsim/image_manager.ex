@@ -102,7 +102,7 @@ defmodule Rsim.ImageManager do
           height: height
         }
 
-        save_image_to_repo(image)
+        save_image_to_repo(image, parent_image.id)
 
       {:error, error} ->
         {:error, error}
@@ -127,8 +127,8 @@ defmodule Rsim.ImageManager do
     :ok
   end
 
-  defp save_image_to_repo(image = %Image{}) do
-    case Rsim.Config.image_repo().save(image) do
+  defp save_image_to_repo(image = %Image{}, parent_image_id \\ nil) do
+    case Rsim.Config.image_repo().save(image, parent_image_id) do
       {:ok, ecto_image} -> {:ok, Rsim.EctoImage.to_image(ecto_image)}
       {:error, error} -> {:error, error}
     end
