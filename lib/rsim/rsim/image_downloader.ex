@@ -18,12 +18,13 @@ defmodule Rsim.ImageDownloader do
     if url == "" do
       {:error, :empty_url}
     else
-      save_tmp_file(url, HTTPoison.get(url))
+      save_tmp_file(url, HTTPoison.get(url, [], follow_redirect: true ))
     end
   end
 
   defp save_tmp_file(_, {:ok, %HTTPoison.Response{status_code: 404}}), do: {:error, :not_exists}
   defp save_tmp_file(_, {:error, %HTTPoison.Error{reason: reason}}), do: {:error, reason}
+  defp save_tmp_file(_, {:ok, %HTTPoison.Response{body: body}}) when body == "", do: {:error, :empty_file}
   defp save_tmp_file(url, {:ok, %HTTPoison.Response{body: body}}) do
     tmp_path = create_tmp_path(url)
     File.write!(tmp_path, body)
