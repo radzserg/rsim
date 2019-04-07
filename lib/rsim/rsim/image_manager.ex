@@ -41,8 +41,8 @@ defmodule Rsim.ImageManager do
           filename :: String.t()
         ) :: {:ok, Rsim.Image.t()} | {:ok, :atom}
   def save_image_from_file(file_path, image_type, filename \\ nil) do
-    mime = FileInfo.get_mime!(file_path)
     size = FileInfo.get_size!(file_path)
+    mime = FileInfo.get_mime!(file_path)
     id = UUID.uuid4()
 
     {:ok, width, height} = Rsim.Config.meter().size(file_path)

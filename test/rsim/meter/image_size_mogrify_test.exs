@@ -11,4 +11,10 @@ defmodule RsimTest.MeterMogrifyTest do
     assert 10 == width
     assert 10 == height
   end
+
+  test "it return error when image is invalid" do
+    file_path = System.cwd() <> "/test/files/empty.jpg"
+
+    assert {:ok, 0, 0} == ImageMeterMogrify.size(file_path)
+  end
 end

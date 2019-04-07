@@ -51,7 +51,7 @@ defmodule Rsim.MixProject do
       {:ecto, "~> 2.0"},
       {:postgrex, ">= 0.0.0"},
       {:httpoison, "~> 1.4"},
-      {:mogrify, "~> 0.6.1"},
+      {:mogrify, "~> 0.7.2"},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
 
