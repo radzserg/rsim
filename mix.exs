@@ -48,7 +48,7 @@ defmodule Rsim.MixProject do
       {:elixir_uuid, "~> 1.2"},
       {:poison, "~> 3.0"},
       {:sweet_xml, "~> 0.6"},
-      {:ecto, "~> 2.0"},
+      {:ecto, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:httpoison, "~> 1.4"},
       {:mogrify, "~> 0.7.2"},
